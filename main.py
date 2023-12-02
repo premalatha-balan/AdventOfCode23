@@ -12,9 +12,13 @@ def text2num(line):
                 "eight",
                 "nine"
                 ]
-  line2 = copy.deepcopy(line)
+  numbers = [str(i) for i in range(10)]
+  print(f"line = {line} ")
+  line2=[]
   for i in range(10):
-    line2 = line.replace(textNumbers[i], str(i))
+    if line.find(textNumbers[i]) != -1:
+      line2.append(str(i))
+  print(f"line2 = {line2}")
   return line2
 
 
@@ -24,16 +28,18 @@ numbers = [str(i) for i in range(10)]
 sumCalib=0
 count=0
 for line in f:
-  for first in line:
-    length = len(line)
+  for first in line2:
+    length = len(line2)
     if first in numbers:
+      sliceF = line[0:line.index(first)]
+      lineSF = text2num(sliceF)
       #print(f"line ={line} first = {first} at {line.index(first)}")
       for last in range (length-1, -1, -1):
-        if line[last] in numbers:
+        if line2[last] in numbers:
           #print(f"found {line[last]} at {last}")
-          output = first+line[last]
+          output = first+line2[last]
           sumCalib+=int(output)
-          print(f"output = {output}, sum = {sumCalib}, count = {count} ")
+          #print(f"output = {output}, sum = {sumCalib}, count = {count} ")
           break
       break
 
