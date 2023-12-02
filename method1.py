@@ -1,23 +1,3 @@
-import copy
-
-def text2num(line):
-  textNumbers = ["zero",
-                 "one",
-                "two",
-                "three",
-                "four",
-                "five",
-                "six",
-                "seven",
-                "eight",
-                "nine"
-                ]
-  line2 = copy.deepcopy(line)
-  for i in range(10):
-    line2 = line.replace(textNumbers[i], str(i))
-  return line2
-
-
 f = open("day1_input.txt", "r")
 
 numbers = [str(i) for i in range(10)]
@@ -36,7 +16,3 @@ for line in f:
           print(f"output = {output}, sum = {sumCalib}, count = {count} ")
           break
       break
-
-
-
-
