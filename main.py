@@ -1,6 +1,7 @@
+#Advent of Code 
+# Day 1
 
-# Where is this going?
-print("hello world")
-print("hello world")
-print("hello world")
-print("hello world")
+f = open("day1_input.txt","r")
+data = f.readline()
+print(f"{data}")
+f.close()
