@@ -1,27 +1,26 @@
 
 def findPartNumLoc(c):
-  x0 = line.index(c)
-  y0 = schema.index(line)
-  hx=line.index(c)+1
-  hy=schema.index(line)+1
-  hx_=line.index(c)-1
-  hy_=schema.index(line)-1
+  x0 = j
+  y0 = i
+  hx=j+1
+  hy=i+1
+  hx_=j-1
+  hy_=i-1
   return x0, y0, hx, hy, hx_, hy_
 
 
 def goRight(line,x,number):
   count = x
-  while line[count] in numbers and count<=len(line)-1:
-    number+=line[count]
+  while count<=len(line)-1 and line[count] in numbers :
+    number= number+line[count]
     count+=1
   return int(number) if number != "" else -1
 
 
 def goLeft(line,x, number):
   count = x
-  while line[count] in numbers and count>=0:
+  while count>=0 and line[count] in number:
     number=line[count]+number
-    count-=1
   return int(number) if number != "" else -1
 
 
@@ -87,7 +86,13 @@ def caseYX_X(c, hy): #adjacent down starting a bit to the left & going right
     number = ""
     number = str(goLeft(lineY, x0,number)) if goLeft(lineY, x0,number) != -1 else number
     number = number.rstrip(number[-1]) if number !="" else number
+    if number =="11": 
+      print(number)
     number = str(goRight(lineY, x0,number))
+    
+    if number =="14": 
+      print(number)
+      y = input(f"enter a key: ")
     return int(number)
   else:
     return -1
@@ -110,14 +115,17 @@ f = open("day2_input.txt", "r")
 schema = [line.strip() for line in f]
 
 numbers = [str(i) for i in range(10)]
-atIndex = -1
+#atIndex = -1
 sumPartNumbers = 0
-for line in schema:
-  for c in line:
-    if atIndex == line.index(c): continue
+for i in range(len(schema)):
+  line = schema[i]
+  for j in range(len(line)):
+    c=line[j]
+    #if atIndex == line.index(c): continue
+    #print(f"c at {j}: {c}" )
     if c!="." and c not in numbers:
-      print(f"c = {c} at the beginning")
-      #print(f"found a symbol {c} in line {line} at {line.index(c)} in schema line {schema.index(line)} ")
+      #print(f"c = {c} at the beginning")
+      print(f"found a symbol {c} at {j} in schema line {i} ")
       x0, y0, hx, hy, hx_, hy_ = findPartNumLoc(c)
       numberI = 0
       numberI = caseX(c, hx) if caseX(c, hx) != -1 else 0 #adjacent right
@@ -145,9 +153,10 @@ for line in schema:
       sumPartNumbers += numberI 
       print(f"sum = {sumPartNumbers} and numberI = {numberI} up a bit")
 
-      print(f"sum = {sumPartNumbers} at symbol {c} at {line.index(c)} in schema line {schema.index(line)} ")
+      #print(f"sum = {sumPartNumbers} at symbol {c} at {line.index(c)} in schema line {schema.index(line)} ")
 
-      atIndex = line.index(c)
+      #atIndex = line.index(c)
+      #c="."
  
       
       #print(f"x0 = {x0}, y0 = {y0}, hx = {hx}, hy = {hy}, hx_ = {hx_}, hy_ = {hy_}")
@@ -155,7 +164,7 @@ for line in schema:
       #print(f"should be symbol = {schema[y0][x0]}")
 
       
-      y = input("enter a key: ")
+      #y = input("enter a key: ")
 print(sumPartNumbers)
 
 f.close
