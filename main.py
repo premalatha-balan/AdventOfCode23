@@ -22,6 +22,7 @@ def text2digit(sliceBF):
   
   return sortTextDigTupp[0][0], sortTextDigTupp[0][1]
 
+#comment
 def text2digitR(sliceAL):
   textDigsDict={}
   textNumbers={"one": 1 , 
