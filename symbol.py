@@ -5,7 +5,7 @@ def findPartNumLoc(c):
   hy = schema.index(line)+1
   hy_ = schema.index(line)-1
   return (hx, hy, hx_, hy_)
-  
+
 
 f = open("day2_input.txt", "r")
 
