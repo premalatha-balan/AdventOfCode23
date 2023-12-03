@@ -4,7 +4,7 @@ def firstText (newLine):
     if i in newLine:
       return textDigs.index(i)
   return -1
-  
+
 def firstDig (newLine):
   for i in numbers:
     if i in newLine:
