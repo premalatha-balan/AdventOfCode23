@@ -113,8 +113,8 @@ numbers = [str(i) for i in range(10)]
 atIndex = -1
 sumPartNumbers = 0
 for line in schema:
-  for i in range(len(line)):
-    c=line[i]
+  for c in line:
+    if atIndex == line.index(c): continue
     if c!="." and c not in numbers:
       print(f"c = {c} at the beginning")
       #print(f"found a symbol {c} in line {line} at {line.index(c)} in schema line {schema.index(line)} ")
