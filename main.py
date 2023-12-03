@@ -1,105 +1,65 @@
-def sortByValue(inDict):
-  return sorted(inDict.items(), key=lambda x: x[1],
-                reverse=False)  #returns a tupple of str of digs and locs
 
-
-def text2digit(sliceBF):
-  textDigsDict = {}
-  textNumbers = {
-      "one": 1,
-      "two": 2,
-      "three": 3,
-      "four": 4,
-      "five": 5,
-      "six": 6,
-      "seven": 7,
-      "eight": 8,
-      "nine": 9,
-      "zero": 0
-  }
-  for text in textNumbers:
-    if text in sliceBF:
-      textDigsDict[str(textNumbers[text])] = sliceBF.find(
-          text)  # {"one":18 // in mxmkjvgsdzfhseightonetwoeight}
-  locs = list(textDigsDict.values())
-  sortTextDigTupp = sortByValue(textDigsDict)
-
-  return sortTextDigTupp[0][0], sortTextDigTupp[0][1]
-
-
-#comment
-def text2digitR(sliceAL):
-  textDigsDict = {}
-  textNumbers = {
-      "one": 1,
-      "two": 2,
-      "three": 3,
-      "four": 4,
-      "five": 5,
-      "six": 6,
-      "seven": 7,
-      "eight": 8,
-      "nine": 9,
-      "zero": 0
-  }
-  for text in textNumbers:
-    if text in sliceBF:
-      textDigsDict[str(textNumbers[text])] = sliceBF.find(
-          text)  # {"one":18 // in mxmkjvgsdzfhseightonetwoeight}
-  locs = list(textDigsDict.values())
-  sortTextDigTupp = sortByValue(textDigsDict)
-  print(sortTextDigTupp)
-
-  return sortTextDigTupp[-1][0], sortTextDigTupp[-1][1]
-
-
-def findDigit(line):
-  numbers = [str(i) for i in range(10)]
-  for cha in line:
-    if cha in numbers:
-      return cha, line.index(cha)
+def firstText (newLine):
+  for i in textDigs:
+    if i in newLine:
+      return textDigs.index(i)
+  return -1
+  
+def firstDig (newLine):
+  for i in numbers:
+    if i in newLine:
+      return numbers.index(i)
+  return -1 
 
 
 f = open("day1_input.txt", "r")
 
-digitsDict = {}
+textDigs = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+
+numbers = [str(i) for i in range(10)]
+
+sumCalib = 0
+count=0
+
 for line in f:
   line = line.strip()
-  cha, indDigit = findDigit(line)
-  digitsDict[cha] = indDigit
-  sliceBF = line[:indDigit]
-  print(
-      f"line = {line}, cha = {cha}, indDigit = {indDigit}, sliceBF = {sliceBF}"
-  )
+  newLine=""
+  for c in line:
+    newLine+=c
+    fT = firstText(newLine)
+    fD = firstDig(newLine)
+    if fT!=-1 or fD!=-1:
+      first = str(fT) if fT!=-1 else str(fD)
+      #print(f"newLine = {newLine}")
+      #print(f"first = {first}, fT = {fT}, fD = {fD} ")
+      break
+  newLine=""
+  for i in range(len(line)-1, -1, -1):
+    c = line[i]
+    newLine = c+newLine
+    lT = firstText(newLine)
+    lD = firstDig(newLine)
+    if lT!=-1 or lD!=-1:
+      last = str(lT) if lT!=-1 else str(lD)
+      #print(f"newLine = {newLine}")
+      #print(f"last = {last}, lT = {lT}, lD = {lD} ")
+      break
+  output = int(first+last)
+  sumCalib += output
+  count+=1
+  #print(f"line = {line}")
+  #print(f"first = {first}, last = {last}, output = {output}")
+  #print(f"sumCalib = {sumCalib}, count={count} ")
+  #y = input("enter a key: \n")
+  #print(f"line = {line} ")
+  #print(f"first = {first}, last = {last}, output = {output}, sumCalib = {sumCalib}, count ={count} \n" )
 
-  text, indText = text2digit(sliceBF)
-  print(f"text = {text}, indText = {indText}")
-  digitsDict[text] = indText
-  print(f"digitsDict = {digitsDict}")
 
-  lineRL = [i for i in line]
-  lineRL.reverse()
-  lineRL = "".join(lineRL)
-  cha, indDigit = findDigit(lineRL)
-  if cha not in digitsDict:
-    digitsDict[cha] = indDigit
+print(sumCalib)
 
-  indDigit += len(line) - 1 - indDigit
-  print(indDigit)
+    
 
-  sliceAL = line[:indDigit]
-  print(f"sliceAL = {sliceAL}")
+      
 
-  text, indText = text2digitR(sliceAL)
-  digitsDict[text] = indText
-  print(text, indText)
-  print(digitsDict)
-  x = input("enter a key:")
 
-  values = digitsDict.values()
-  values.sort()
-  print(
-      f"first = {digitsDict.index(values[0])}, last = {digitsDict.index(values[-1])}"
-  )
-  x = input("enter a key:")
 f.close()
