@@ -19,12 +19,11 @@ def goRight(line,x):
 
 
 def goLeft(line,x):
-  if j==108 and i==52:
-    print(f"x = {x} inside left function ")
   count = x
   number = ""
   while count>=0 and line[count] in numbers:
     number=line[count]+number
+    count-=1
   return int(number) if number != "" else -1
 
 
@@ -129,35 +128,35 @@ for i in range(len(schema)):
     c=line[j]
     #if atIndex == line.index(c): continue
     #print(f"c at {j}: {c}" )
-    if c!="." and c not in numbers and i == 52:
+    if c!="." and c not in numbers:
       #print(f"c = {c} at the beginning")
-      print(f"found a symbol {c} at {j} in schema line {i} ")
+      #print(f"found a symbol {c} at {j} in schema line {i} ")
       x0, y0, hx, hy, hx_, hy_ = findPartNumLoc(c)
       numberI = 0
       numberI = caseX(c, hx) if caseX(c, hx) != -1 else 0 #adjacent right
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} right") 
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} right") 
       numberI = caseX_(c, hx_) if caseX_(c, hx_) != -1 else 0 #adjacent left
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} left") 
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} left") 
       numberI = caseYX(c, hy) if caseYX(c, hy) != -1 else 0 #adjacent down diagonally & going right
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down right")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down right")
       numberI = caseYX_(c, hy) if caseYX_(c, hy) != -1 else 0 #adjacent down diagonally & going left
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down left")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down left")
       numberI = caseY_X(c, hy_) if caseY_X(c, hy_) != -1 else 0 #adjacent up diagonally & going right
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up right")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up right")
       numberI = fcaseY_X_(c, hy_) if fcaseY_X_(c, hy_) != -1 else 0 #adjacent up diagonally & going left
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up left")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up left")
       numberI = caseYX_X(c, hy) if caseYX_X(c, hy) != -1 else 0 #adjacent down starting a bit to the left & going right
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} down and a bit")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} down and a bit")
       numberI = caseY_X_X(c, hy_) if caseY_X_X(c, hy_) != -1 else 0 #adjacent up starting a bit to the left & going right
       sumPartNumbers += numberI 
-      print(f"sum = {sumPartNumbers} and numberI = {numberI} up a bit")
+      #print(f"sum = {sumPartNumbers} and numberI = {numberI} up a bit")
 
       #print(f"sum = {sumPartNumbers} at symbol {c} at {line.index(c)} in schema line {schema.index(line)} ")
 
@@ -170,7 +169,7 @@ for i in range(len(schema)):
       #print(f"should be symbol = {schema[y0][x0]}")
 
       
-      y = input("enter a key: ")
+      #y = input("enter a key: ")
 print(sumPartNumbers)
 
 f.close
