@@ -121,41 +121,44 @@ schema = [line.strip() for line in f]
 
 numbers = [str(i) for i in range(10)]
 #atIndex = -1
-sumPartNumbers = 0
+
+#sumPartNumbers = 0
+sumGears = 1
 for i in range(len(schema)):
   line = schema[i]
   for j in range(len(line)):
     c=line[j]
     #if atIndex == line.index(c): continue
     #print(f"c at {j}: {c}" )
-    if c!="." and c not in numbers:
+    if c=="*":
       #print(f"c = {c} at the beginning")
       #print(f"found a symbol {c} at {j} in schema line {i} ")
       x0, y0, hx, hy, hx_, hy_ = findPartNumLoc(c)
       numberI = 0
+      adjNums = []
       numberI = caseX(c, hx) if caseX(c, hx) != -1 else 0 #adjacent right
-      sumPartNumbers += numberI 
+      adjNums.append(numberI) 
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} right") 
       numberI = caseX_(c, hx_) if caseX_(c, hx_) != -1 else 0 #adjacent left
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} left") 
       numberI = caseYX(c, hy) if caseYX(c, hy) != -1 else 0 #adjacent down diagonally & going right
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down right")
       numberI = caseYX_(c, hy) if caseYX_(c, hy) != -1 else 0 #adjacent down diagonally & going left
-      sumPartNumbers += numberI 
+      adjNums.append(numberI) 
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag down left")
       numberI = caseY_X(c, hy_) if caseY_X(c, hy_) != -1 else 0 #adjacent up diagonally & going right
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up right")
       numberI = fcaseY_X_(c, hy_) if fcaseY_X_(c, hy_) != -1 else 0 #adjacent up diagonally & going left
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} diag up left")
       numberI = caseYX_X(c, hy) if caseYX_X(c, hy) != -1 else 0 #adjacent down starting a bit to the left & going right
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} down and a bit")
       numberI = caseY_X_X(c, hy_) if caseY_X_X(c, hy_) != -1 else 0 #adjacent up starting a bit to the left & going right
-      sumPartNumbers += numberI 
+      adjNums.append(numberI)  
       #print(f"sum = {sumPartNumbers} and numberI = {numberI} up a bit")
 
       #print(f"sum = {sumPartNumbers} at symbol {c} at {line.index(c)} in schema line {schema.index(line)} ")
@@ -170,6 +173,26 @@ for i in range(len(schema)):
 
       
       #y = input("enter a key: ")
-print(sumPartNumbers)
+  
+      if len(adjNums)>=2:
+        #print(f"at line {i} and loc {j} and adjNums = {adjNums}")
+        numCount = 0
+        ratioGears = 1
+        for nums in adjNums:
+          if nums != 0: 
+            numCount += 1
+            ratioGears*=nums
+        if numCount>2: 
+          #print(f"at line {i} and loc {j} and adjNums = {adjNums}")
+          #print(f"num of adjs = {numCount}") 
+          #y = input("enter a key: ")
+          print("there were too many gears")
+        #y = input("enter a key: ")
+      else:
+        print(f"at line {i} and loc {j} and adjNums = {adjNums}")
+        #y = input("enter a key: ")
+        
+        
+#print(sumPartNumbers)
 
 f.close
