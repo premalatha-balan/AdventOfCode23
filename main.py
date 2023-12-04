@@ -1,11 +1,26 @@
 
+def match (winCard, playCard):
+  matches = 0
+  for i in range(len(playCard)):
+    if playCard[i] in winCard:  
+      matches+=1  
+  return matches
+
+def instanceMaking(match_lst):
+  for k in range(len(match_lst)):
+    m = match_lst[k]
+    inst = instances[k]
+    for i in range(k+1,m+k+1):
+      instances[i]+=inst #add the instances by inst times for next m cs
+  return instances
+
+
 f=open("day4_input.txt", "r")
 
-score = lambda n: int(2**(n-1))
+match_lst=[]
+instances=[]
 
-totalWorth = 0
-lcount=1
-sCount=0
+l = 0
 for line in f:
   line = line.strip()
   winCard = []
@@ -14,19 +29,14 @@ for line in f:
   playC_start = line.find("|")
   winCard = line[winC_start+1:playC_start].split()
   playCard = line[playC_start+1:].split()
-  #print(f"winCard = {winCard} l = {len(winCard)} and playCard = {playCard} l = {len(playCard)} ")
-  sCount=0
-  #for c in playCard:
-  for i in range(len(playCard)):
-    c = playCard[i]
-    if c in winCard:  
-      sCount+=1
-      #print(f"{c} in both and so the count = {sCount} ")
-  totalWorth+=score(sCount)
-  #print(f"totalWorth = {totalWorth} and score = {score(sCount)} for card {lcount} ")
-  lcount+=1
-  #y = input("enter a key: ")
 
-print(f"totalWorth = {totalWorth} ")
+  matches = match(winCard, playCard)
+  match_lst.append(matches)
+  instances.append(1)
+
+instances = instanceMaking(match_lst)
+print(sum(instances))
+
+
 f.close
 
