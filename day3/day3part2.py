@@ -165,15 +165,15 @@ for i in range(len(schema)):
 
       #atIndex = line.index(c)
       #c="."
- 
-      
+
+
       #print(f"x0 = {x0}, y0 = {y0}, hx = {hx}, hy = {hy}, hx_ = {hx_}, hy_ = {hy_}")
-      
+
       #print(f"should be symbol = {schema[y0][x0]}")
 
-      
+
       #y = input("enter a key: ")
-  
+
       if len(adjNums)>=2:
         #print(f"at line {i} and loc {j} and adjNums = {adjNums}")
         numCount = 0
@@ -184,14 +184,12 @@ for i in range(len(schema)):
             ratioGears*=nums
             #print(f"numCount = {numCount} multiplying {nums} and ratioGears = {ratioGears}")
         #y = input("enter a key: ")
-      
+
       if numCount>=2: 
         sumGears+=ratioGears
         #print(f"sumGears = {sumGears} adding {ratioGears} ")
         #y = input("enter a key: ")
-    
-        
-        
+
 #print(sumPartNumbers)
 print(sumGears)
 
