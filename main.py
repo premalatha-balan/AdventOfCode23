@@ -19,7 +19,6 @@ for line in f:
       number = int(num)
       Games[game].append((color, number))
 
-  l+=1
   for game in Games:
     reds,blues,greens = 0,0,0
     for i in range(1,len(Games[game])):
@@ -30,6 +29,8 @@ for line in f:
   gameId = Games[game][0]
   if reds<= bag[0][1] and blues <= bag[1][1] and greens <= bag[2][1]:
     Sum+=gameId
+  
+  l+=1 #end of for loop
   
 print(Sum)  
 
