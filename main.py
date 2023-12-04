@@ -123,7 +123,7 @@ numbers = [str(i) for i in range(10)]
 #atIndex = -1
 
 #sumPartNumbers = 0
-sumGears = 1
+sumGears = 0
 for i in range(len(schema)):
   line = schema[i]
   for j in range(len(line)):
@@ -182,17 +182,17 @@ for i in range(len(schema)):
           if nums != 0: 
             numCount += 1
             ratioGears*=nums
-        if numCount>2: 
-          #print(f"at line {i} and loc {j} and adjNums = {adjNums}")
-          #print(f"num of adjs = {numCount}") 
-          #y = input("enter a key: ")
-          print("there were too many gears")
+            #print(f"numCount = {numCount} multiplying {nums} and ratioGears = {ratioGears}")
         #y = input("enter a key: ")
-      else:
-        print(f"at line {i} and loc {j} and adjNums = {adjNums}")
+      
+      if numCount>=2: 
+        sumGears+=ratioGears
+        #print(f"sumGears = {sumGears} adding {ratioGears} ")
         #y = input("enter a key: ")
+      
         
         
 #print(sumPartNumbers)
+print(sumGears)
 
 f.close
