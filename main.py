@@ -9,33 +9,57 @@ def findPartNumLoc(c):
   return x0, y0, hx, hy, hx_, hy_
 
 
-def goRight(line,x,number):
+def goRight(line,x):
   count = x
+  number=""
   while count<=len(line)-1 and line[count] in numbers :
     number= number+line[count]
     count+=1
   return int(number) if number != "" else -1
 
 
-def goLeft(line,x, number):
+def goLeft(line,x):
+  if j==108 and i==52:
+    print(f"x = {x} inside left function ")
   count = x
-  while count>=0 and line[count] in number:
+  number = ""
+  while count>=0 and line[count] in numbers:
     number=line[count]+number
   return int(number) if number != "" else -1
 
 
+def goLeft_Right(lineF,x):
+  if lineF[x] not in numbers or x<0: return -1
+  number=""
+  count = x
+  while count>=0 and lineF[count] in numbers:
+    #print(f"lineF{count} = {lineF[count]}")
+    count-=1
+  #print(f"count = {count}, started at {x}")
+  count+=1
+  if count>=0:
+    #print("I am in")
+    #print(f"first check {count}<= {len(lineF)-1} and second check {lineF[count]}")
+    while count<=len(lineF)-1 and lineF[count] in numbers:
+      #print("I am in too")
+      number= number+lineF[count]
+      #print(f"number = {number} at count = {count} ")
+      count+=1
+    return int(number) if number != "" else -1
+  else:
+    return -1
+
+
 def caseX(c, hx): #adjacent right
   if hx<=len(line)-1:
-    number = ""
-    return goRight(line, hx, number) 
+    return goRight(line, hx) 
   else:
     return -1
 
 
 def caseX_(c, hx_): #adjacent left
   if hx_>=0:
-    number = ""
-    return goLeft(line, hx_,number)
+    return goLeft(line, hx_)
   else:
     return -1
 
@@ -44,8 +68,7 @@ def caseYX(c, hy): #adjacent down diagonally & going right
   if hy<=len(schema)-1 and hx <=len(line)-1:
     lineY = schema[hy]
     if lineY[x0] in numbers: return -1
-    number = ""
-    return goRight(lineY, hx, number)
+    return goRight(lineY, hx)
   else:
     return -1
 
@@ -54,8 +77,7 @@ def caseYX_(c, hy): #adjacent down diagonally & going left
   if hy<=len(schema)-1 and hx_>=0:
     lineY = schema[hy]
     if lineY[x0] in numbers: return -1
-    number = ""
-    return goLeft(lineY, hx_,number)
+    return goLeft(lineY, hx_)
   else:
     return -1
 
@@ -64,8 +86,7 @@ def caseY_X(c, hy_): #adjacent up diagonally & going right
   if hy_>=0 and hx <=len(line)-1:
     lineY_ = schema[hy_]
     if lineY_[x0] in numbers: return -1
-    number = ""
-    return goRight(lineY_, hx, number)
+    return goRight(lineY_, hx)
   else:
     return -1
 
@@ -74,8 +95,7 @@ def fcaseY_X_(c, hy_): #adjacent up diagonally & going left
   if hy_>=0 and hx_>=0:
    lineY_ = schema[hy_]
    if lineY_[x0] in numbers: return -1
-   number = ""
-   return goLeft(lineY_, hx_,number)
+   return goLeft(lineY_, hx_)
   else:
    return -1
 
@@ -83,17 +103,7 @@ def fcaseY_X_(c, hy_): #adjacent up diagonally & going left
 def caseYX_X(c, hy): #adjacent down starting a bit to the left & going right
   if hy<=len(schema)-1 and hx_>=0:
     lineY = schema[hy]
-    number = ""
-    number = str(goLeft(lineY, x0,number)) if goLeft(lineY, x0,number) != -1 else number
-    number = number.rstrip(number[-1]) if number !="" else number
-    if number =="11": 
-      print(number)
-    number = str(goRight(lineY, x0,number))
-    
-    if number =="14": 
-      print(number)
-      y = input(f"enter a key: ")
-    return int(number)
+    return goLeft_Right(lineY,x0)
   else:
     return -1
 
@@ -101,11 +111,7 @@ def caseYX_X(c, hy): #adjacent down starting a bit to the left & going right
 def caseY_X_X(c, hy_): #adjacent up starting a bit to the left & going right
   if hy_>=0 and hx_>=0:
     lineY_ = schema[hy_] 
-    number = ""
-    number = str(goLeft(lineY_, x0,number)) if goLeft(lineY_, x0,number) != -1 else number
-    number = number.rstrip(number[-1]) if number !="" else number
-    number = str(goRight(lineY_, x0,number))
-    return int(number)
+    return goLeft_Right(lineY_,x0)
   else:
     return -1
 
@@ -123,7 +129,7 @@ for i in range(len(schema)):
     c=line[j]
     #if atIndex == line.index(c): continue
     #print(f"c at {j}: {c}" )
-    if c!="." and c not in numbers:
+    if c!="." and c not in numbers and i == 52:
       #print(f"c = {c} at the beginning")
       print(f"found a symbol {c} at {j} in schema line {i} ")
       x0, y0, hx, hy, hx_, hy_ = findPartNumLoc(c)
@@ -164,7 +170,7 @@ for i in range(len(schema)):
       #print(f"should be symbol = {schema[y0][x0]}")
 
       
-      #y = input("enter a key: ")
+      y = input("enter a key: ")
 print(sumPartNumbers)
 
 f.close
