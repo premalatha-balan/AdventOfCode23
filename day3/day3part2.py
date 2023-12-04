@@ -190,6 +190,8 @@ for i in range(len(schema)):
         #print(f"sumGears = {sumGears} adding {ratioGears} ")
         #y = input("enter a key: ")
 
+
+
 #print(sumPartNumbers)
 print(sumGears)
 
