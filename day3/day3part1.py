@@ -162,13 +162,13 @@ for i in range(len(schema)):
 
       #atIndex = line.index(c)
       #c="."
- 
-      
+
+
       #print(f"x0 = {x0}, y0 = {y0}, hx = {hx}, hy = {hy}, hx_ = {hx_}, hy_ = {hy_}")
-      
+
       #print(f"should be symbol = {schema[y0][x0]}")
 
-      
+
       #y = input("enter a key: ")
 print(sumPartNumbers)
 
