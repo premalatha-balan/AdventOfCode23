@@ -81,9 +81,8 @@ for pair in seedPairs:
   #corres=[]
   #corres.append(seed)
   for i in range(pair[0], pair[0]+pair[1]):
-    seed=i
     #print(seed)
-    s2SMatch = checkRange(seed, seed2SoilMap)
+    s2SMatch = checkRange(i, seed2SoilMap)
     #corres.append(s2SMatch)
     #print(f"s2SMatch = {s2SMatch}")
     s2FMatch = checkRange(s2SMatch, soil2FertlMap)
