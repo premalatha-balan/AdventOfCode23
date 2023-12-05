@@ -49,7 +49,34 @@ def readFile2Data():
   f.close
   return(seeds, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
+def checkRange(mapElement, mapData):
+  #The range is start+range-1
+  print(f"mapEl = {mapElement}, mapData = {mapData} ")
+  y=input("enter a key: ")
+  
+  for line in mapData:
+    start, end = line[1], line[1]+line[2]-1 
+    
+    match = end - mapElement + line[0] if mapElement >= start and mapElement <= end else mapElement
+    if match!=mapElement: return match
+    return(match)
+
+
+
+#main 
 seeds, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
 
-#The range is start+range-1
-
+locations=[]
+for seed in seeds:
+  s2SMatch = checkRange(seed, seed2SoilMap)
+  s2FMatch = checkRange(s2SMatch, soil2FertlMap)
+  f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
+  w2LMatch = checkRange(f2WMatch, water2LightMap)
+  l2TMatch = checkRange(w2LMatch, light2TempMap)
+  t2HMatch = checkRange(l2TMatch, temp2HumidMap)
+  h2LMatch = checkRange(t2HMatch, humid2LocMap)
+  locations.append(h2LMatch)
+  #print(f"for seed {seed} s2SMatch = {s2SMatch}, s2FMatch = {s2FMatch}, f2WMatch = {f2WMatch}, w2LMatch = {w2LMatch}, l2TMatch = {l2TMatch}, t2HMatch = {t2HMatch}, h2LMatch = {h2LMatch}" )
+  #print(f"Location = {h2LMatch}")
+  #y=input("enter a key: ")
+print(min(locations))
