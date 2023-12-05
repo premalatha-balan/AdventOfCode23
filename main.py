@@ -4,7 +4,7 @@ f=open("day2_input.txt", "r")
 bag = [("red", 12),  ("blue",14), ("green", 13)]
 l = 1
 Games ={}
-Sum=0
+SumPowers=0
 for line in f:
   line=line.strip()
   start = line.find(":")
@@ -18,21 +18,22 @@ for line in f:
       num, color = ball.split(" ")
       number = int(num)
       Games[game].append((color, number))
+  #print(f"Games[{game}] {Games[game]}" )
 
-  for game in Games:
-    reds,blues,greens = 0,0,0
-    for i in range(1,len(Games[game])):
-      if "red" in Games[game][i]: reds = max(reds,Games[game][i][1])
-      if "blue" in Games[game][i]: blues = max(blues,Games[game][i][1])
-      if "green" in Games[game][i]: greens = max(greens,Games[game][i][1])
+  reds,blues,greens = 0,0,0
+  for i in range(1,len(Games[game])):
+    if "red" in Games[game][i]: reds = max(reds,Games[game][i][1])
+    if "blue" in Games[game][i]: blues = max(blues,Games[game][i][1])
+    if "green" in Games[game][i]: greens = max(greens,Games[game][i][1])
+  #print(f"{game}: reds {reds} blues {blues} greens {greens}")
+  #y = input("enter a key: ")
 
-  gameId = Games[game][0]
-  if reds<= bag[0][1] and blues <= bag[1][1] and greens <= bag[2][1]:
-    Sum+=gameId
+  gamePower = reds*blues*greens
+  SumPowers+=gamePower
   
   l+=1 #end of for loop
   
-print(Sum)  
+print(SumPowers)  
 
 f.close
 
