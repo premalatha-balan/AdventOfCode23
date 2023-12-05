@@ -185,7 +185,7 @@ for line in f:
       #reading soilmap info
       line = str(f.readlines(1))
       #print(f"line {line} inside while loop")
-      line = line.strip()
+      line = line.strip("[]\n'")
       print(f"stripped line {line}")
       
       addline2loc = (line[line.find(":")+1:-2]).strip().split()
