@@ -9,7 +9,7 @@ for line in f:
     line = line.strip()
     seeds = (line[line.find(":")+1:]).strip().split()
     #line=[1,2,3] #making line not empty at the end of reading seeds
-    print(seeds)
+    #print(seeds)
     #y = input("enter a key at seeds: ")
 
   elif count==2:
@@ -29,7 +29,7 @@ for line in f:
       if len(addline2soil)<=0:break
       #print(f"addline2soil {addline2soil}")
       soilMap.append(addline2soil)
-      print(soilMap)
+      #print(soilMap)
       #y = input("enter a key at soil: ")
   elif count==3:
     fertlMap=[]
@@ -61,7 +61,7 @@ for line in f:
   elif count==4:
     waterMap=[]
     #print(f"line {line}")
-    y =input("enter a key at line")
+    #y =input("enter a key at line")
     line = line.strip("[]\n'")
     addline2water = (line[line.find(":")+1:]).strip().split()
     #print(f"addline2water {addline2water} length = {len(addline2water)} ")
@@ -83,8 +83,9 @@ for line in f:
       if len(addline2water)<=0:break
       #print(f"addline2water {addline2water}")
       waterMap.append(addline2water)
-      #print(waterMap)
-      #y = input("enter a key at water end of while loop: ")
+    #print(waterMap)
+    #y = input("enter a key at water end of while loop: ")
+  
   elif count==5:
     lightMap=[]
     #print(f"line {line}")
@@ -110,8 +111,8 @@ for line in f:
       if len(addline2light)<=0:break
       #print(f"addline2light {addline2light}")
       lightMap.append(addline2light)
-      #print(lightMap)
-      #y = input("enter a key at light end of while loop: ")
+    #print(lightMap)
+    #y = input("enter a key at light end of while loop: ")
   elif count==6:
     tempMap=[]
     #print(f"line {line}")
@@ -137,8 +138,8 @@ for line in f:
       if len(addline2temp)<=0:break
       #print(f"addline2temp {addline2temp}")
       tempMap.append(addline2temp)
-      #print(tempMap)
-      #y = input("enter a key at temp end of while loop: ")
+    #print(tempMap)
+    #y = input("enter a key at temp end of while loop: ")
   elif count==7:
     humidMap=[]
     #print(f"line {line}")
@@ -164,8 +165,8 @@ for line in f:
       if len(addline2humid)<=0:break
       #print(f"addline2humid {addline2humid}")
       humidMap.append(addline2humid)
-      #print(humidMap)
-      #y = input("enter a key at humid end of while loop: ")
+    #print(humidMap)
+    #y = input("enter a key at humid end of while loop: ")
   elif count==8:
     locMap=[]
     #print(f"line {line}")
@@ -183,17 +184,20 @@ for line in f:
       #y = input("enter a key inside loc while loop")
       #reading soilmap info
       line = str(f.readlines(1))
-      # #print(f"line {line} inside while loop")
-      line = line.strip("[]\n'")
-      ##print(f"stripped line {line}")
+      #print(f"line {line} inside while loop")
+      line = line.strip()
+      print(f"stripped line {line}")
+      
       addline2loc = (line[line.find(":")+1:-2]).strip().split()
-      #print(f"addline2loc {addline2loc} length = {len(addline2loc)} ")
+      print(f"addline2loc {addline2loc} length = {len(addline2loc)} ")
       if len(addline2loc)<=0:break
       #print(f"addline2loc {addline2loc}")
       locMap.append(addline2loc)
-      #print(locMap)
-      #y = input("enter a key at loc end of while loop: ")
+    print(locMap)
+    print(f"line {line} ")
+    y = input("enter a key at loc end of while loop: ")
   count+=1
+  
 
 print(f"left the for loop too. ")
 f.close
