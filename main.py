@@ -9,6 +9,14 @@ def readFile2Data():
   seeds = inData[0].split()
   seeds.remove("seeds:")
   seeds = [int(i) for i in seeds]
+  #print(seeds)
+  seedPairs = []
+  for i in range(0,len(seeds),2):
+    #print(seeds[i], seeds[i+1])
+    pair=(seeds[i], seeds[i+1])
+    #print(pair)
+    seedPairs.append(pair)
+  #print(seedPairs)
   
   seed2SoilMap = inData[2:inData.index("soil-to-fertilizer map:")]
   seed2SoilMap = [line.split() for line in seed2SoilMap]
@@ -47,18 +55,15 @@ def readFile2Data():
   #print(f"humid2LocMap = {humid2LocMap}")
 
   f.close
-  return(seeds, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
+  return(seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
 def checkRange(mapElement, mapData):
   #The range is start+range-1
-  #print(f"len = {len(mapData)}")
+  
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
-    #print(f"mapEl = {mapElement}, line = {line}, start = {start} end = {end} ")
     
     match = mapElement - start + line[0] if mapElement >= start and mapElement <= end else mapElement
-    #print(f"match = {match}")
-    #y=input("enter a key: ")
     
     if match!=mapElement: return match
       
@@ -67,41 +72,41 @@ def checkRange(mapElement, mapData):
 
 
 #main 
-seeds, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
+seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
 
 locations=[]
-correspond=[]
-for seed in seeds:
-  corres=[]
-  corres.append(seed)
-  s2SMatch = checkRange(seed, seed2SoilMap)
-  corres.append(s2SMatch)
-  #print(f"s2SMatch = {s2SMatch}")
-  s2FMatch = checkRange(s2SMatch, soil2FertlMap)
-  corres.append(s2FMatch)
-  #print(f"s2FMatch = {s2FMatch}")
-  f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
-  corres.append(f2WMatch)
-  #print(f"f2WMatch = {f2WMatch}")
-  w2LMatch = checkRange(f2WMatch, water2LightMap)
-  corres.append(w2LMatch)
-  #print(f"w2LMatch = {w2LMatch}")
-  l2TMatch = checkRange(w2LMatch, light2TempMap)
-  corres.append(l2TMatch)
-  #print(f"l2TMatch = {l2TMatch}")
-  t2HMatch = checkRange(l2TMatch, temp2HumidMap)
-  corres.append(t2HMatch)
-  #print(f"t2HMatch = {t2HMatch}")
-  h2LMatch = checkRange(t2HMatch, humid2LocMap)
-  locations.append(h2LMatch)
-  corres.append(h2LMatch)
-  correspond.append(corres)
-  #print(f"h2LMatch = {h2LMatch}")
-  #print(f"for seed {seed} s2SMatch = {s2SMatch}, s2FMatch = {s2FMatch}, f2WMatch = {f2WMatch}, w2LMatch = {w2LMatch}, l2TMatch = {l2TMatch}, t2HMatch = {t2HMatch}, h2LMatch = {h2LMatch}" )
-  #print(f"Location = {h2LMatch}")
-  #y=input("enter a key: ")
+#correspond=[]
+for pair in seedPairs:
+  print(pair)
+  #corres=[]
+  #corres.append(seed)
+  for i in range(pair[0], pair[0]+pair[1]):
+    seed=i
+    #print(seed)
+    s2SMatch = checkRange(seed, seed2SoilMap)
+    #corres.append(s2SMatch)
+    #print(f"s2SMatch = {s2SMatch}")
+    s2FMatch = checkRange(s2SMatch, soil2FertlMap)
+    #corres.append(s2FMatch)
+    #print(f"s2FMatch = {s2FMatch}")
+    f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
+    #corres.append(f2WMatch)
+    #print(f"f2WMatch = {f2WMatch}")
+    w2LMatch = checkRange(f2WMatch, water2LightMap)
+    #corres.append(w2LMatch)
+    #print(f"w2LMatch = {w2LMatch}")
+    l2TMatch = checkRange(w2LMatch, light2TempMap)
+    #corres.append(l2TMatch)
+    #print(f"l2TMatch = {l2TMatch}")
+    t2HMatch = checkRange(l2TMatch, temp2HumidMap)
+    #corres.append(t2HMatch)
+    #print(f"t2HMatch = {t2HMatch}")
+    h2LMatch = checkRange(t2HMatch, humid2LocMap)
+    locations.append(h2LMatch)
+  print(locations)
+  y=input("enter a key: ")
+    #print(h2LMatch)
+    #corres.append(h2LMatch)
+    #correspond.append(corres)
 
-#print(locations)
-#print(min(locations))
-print(correspond)
 print(min(locations))
