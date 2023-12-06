@@ -97,6 +97,9 @@ def correspond(pair, destPair, sourcePair, mapData):
         destPair.append((matched, endMatch))
         break
 
+tuple2starts = lambda tuplein : tuplein[0]
+#tuple2data = lambda tuplein : a, b
+
 
 #main 
 seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
@@ -133,10 +136,12 @@ for temp in tempPairs:
 for humid in humidPairs:
   correspond(humid, locationPairs, humidPairs, humid2LocMap)
 
-  #print(locationPairs)
-  #y=input("enter a key: ")
-    #print(h2LMatch)
-    #corres.append(h2LMatch)
-    #correspond.append(corres)
+for loc in locationPairs:
+  correspond(loc, locations, locationPairs, humid2LocMap)
+
+print(locationPairs)
+y = input("enter a key: ")
+locations = list(map(tuple2starts, locationPairs))
+
 
 print(min(locations))
