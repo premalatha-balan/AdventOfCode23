@@ -1,10 +1,9 @@
 
 def readFile2Data():
-  f=open("day5_input.txt", "r")
+  f=open("day5Test.txt", "r")
   
   #reading the file and storing it in a list
   inData = [line.strip() for line in f if (line != "" and line != " " and line != "\n")]
-  #print(inData)
   
   seeds = inData[0].split()
   seeds.remove("seeds:")
@@ -61,41 +60,63 @@ def correspond(pair, destPair, sourcePair, mapData):
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
     startPair, endPair = pair[0], pair[0]+pair[1]-1
+    print(f"start = {start}, end = {end}, startPair = {startPair}, endPair = {endPair} ")
+    y = input("enter a key: ")
 
     if startPair>=start:
       if endPair<=end: # seed range is fully inside
         matched = xCorres(startPair, line[0], start, end)
         destPair.append((matched, pair[1])) # tuple match is a soil correspondent tuple
-        break
+        print("case: fully in")
+        print(f"matched = {matched}")
+        print(f"desPair = {destPair}")
+        y=input("enter a key: ")
       else: #endPair>end:
         if startPair< end:
           matched = xCorres(startPair, line[0], start, end)
           endMatch = line[2]+line[1]-matched #+1 & -1 cancel out
           destPair.append((matched, endMatch))
           sourcePair.append((endMatch+1,  endPair-end)) #appending unmatched bottom bit as seed and range
-          break
+          print("case: unmatched bottom bit")
+          print(f"matched = {matched}")
+          print(f"destPair = {destPair}")
+          print(f"sourcePair = {sourcePair}")
+          y=input("enter a key: ")
         elif startPair == end:
           endMatch==0
           matched = xCorres(startPair, line[0], start, end)
           destPair.append((matched, 0))
-          break
-        else: 
-          destPair.append((pair[0], pair[1]))
-          break
+          print("case: just a line at startPair")
+          print(f"matched = {matched}")
+          print(f"destPair = {destPair}")
+          y=input("enter a key: ")
+        else:
+          if (pair[0], pair[1]) not in destPair: destPair.append((pair[0], pair[1]))
+          print(f"case: fully out bottom")
+          print(f"destPair = {destPair}")
+          y=input("enter a key: ")
     else: #startPair<start
       if endPair<start:
-        destPair.append((pair[0], pair[1]))
-        break
+        if (pair[0], pair[1]) not in destPair: destPair.append((pair[0], pair[1]))
+        print(f"case: fully out at top")
+        print(f"destPair = {destPair}")
+        y=input("enter a key: ")
       elif endPair==start:
         matched = xCorres(endPair, line[0],start, end)
         destPair.append((matched, 0))
-        break
+        print("case: just a line at endPair")
+        print(f"matched = {matched}")
+        print(f"destPair = {destPair}")
+        y=input("enter a key: ")
       else: #endPair>start:
         sourcePair.append((startPair, startPair-start))
         matched = xCorres(start, line[0], start, end)
         endMatch = endPair-start+1
         destPair.append((matched, endMatch))
-        break
+        print("case: unmatched top bit")
+        print(f"matched = {matched}")
+        print(f"destPair = {destPair}")
+        y=input("enter a key: ")
 
 tuple2starts = lambda tuplein : tuplein[0]
 #tuple2data = lambda tuplein : a, b
@@ -103,6 +124,8 @@ tuple2starts = lambda tuplein : tuplein[0]
 
 #main 
 seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
+print(f"seedPairs = {seedPairs}")
+y = input("enter a key: ")
 
 soilPairs=[]
 fertlPairs=[]
@@ -117,7 +140,13 @@ locations=[]
 
 for seed in seedPairs:
   correspond(seed, soilPairs, seedPairs, seed2SoilMap)
-    
+print(f"seedPairs = {seedPairs}")
+y = input("enter a key: ")
+print(f"soilPairs = {soilPairs}")
+y = input("enter a key: ")
+
+#[correspond(i) for i in j for j in bigLst]
+# [seedPairs, soilPairs...]
 for soil in soilPairs:
   correspond(soil, fertlPairs, soilPairs, soil2FertlMap)
 
