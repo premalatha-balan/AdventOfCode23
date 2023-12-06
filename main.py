@@ -63,7 +63,7 @@ xCorres = lambda a, b, start, end: a if a<start or a>end else b+(a-start)
 
 #need to check the end of the range is still in match.
 
-def checkRange(pair, mapData):
+def checkRange(pair, destPair, sourcePair, mapData):
   #The range is start+range-1
   
   for line in mapData:
@@ -73,35 +73,33 @@ def checkRange(pair, mapData):
     if startPair>=start:
       if endPair<=end: # seed range is fully inside
         matched = xCorres(startPair, line[0], start, end)
-        match = (matched, pair[1]) # tuple match is a soil correspondent tuple
-        return match, tuple()
+        destPair.append(matched, pair[1]) # tuple match is a soil correspondent tuple
+        break
       else: #endPair>end:
         if startPair< end:
           endMatch = line[2]+line[1]-matched #+1 & -1 cancel out
           matched = xCorres(startPair, line[0], start, end)
-          match = (matched, endMatch)
-          appendPair = (endMatch+1,  endPair-end) #appending unmatched bottom bit as seed and range
-          return match, appendPair
+          destPair.append(matched, endMatch)
+          sourcePair.append(endMatch+1,  endPair-end) #appending unmatched bottom bit as seed and range
+          break
         elif startPair == end:
           endMatch==0
           matched = xCorres(startPair, line[0], start, end)
-          match = (matched, 0)
-          return match, tuple()
-        else: return (pair[0], pair[1]), tuple()
+          destPair.append(matched, 0)
+        else: 
+          destPair.append(pair[0], pair[1])
+          break
     else: #startPair<start
       if endPair<start:
-        match = (pair[0], pair[1])
-        return match, tuple()
+        destPair.append(pair[0], pair[1])
       elif endPair=start:
         matched = xCorres(endPair, line[0],start, end)
-        match=(matched, 0)
-        return match, tuple()
+        destPair.append(matched, 0)
       else: #endPair>start:
-        appendPair = (startPair, startPair-start)
+        sourcePair.append(startPair, startPair-start)
         matched = xCorres(start, line[0], start, end)
         endMatch = endPair-start+1
-        match = (matched, endMatch), 
-        return match, appendPair
+        destPair.append(matched, endMatch), 
 
   return match(pair[0], pair[1]), tuple()
 
