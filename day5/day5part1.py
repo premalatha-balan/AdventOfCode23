@@ -49,17 +49,18 @@ def readFile2Data():
   f.close
   return(seeds, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
+x = lambda a, b, start, end: a if a<start or a>end else b+(a-start)
+
 def checkRange(mapElement, mapData):
   #The range is start+range-1
   #print(f"len = {len(mapData)}")
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
-
-    match = mapElement if mapElement<start or mapElement>end: else line[0]+(mapElement-start)
+    
+    match=x(mapElement, line[0], start, end)
 
     if match!=mapElement: return match
-    
-      
+       
   return(match)
 
 
