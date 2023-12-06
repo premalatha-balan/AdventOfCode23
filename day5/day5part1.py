@@ -55,7 +55,7 @@ def checkRange(mapElement, mapData):
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
 
-    return mapElement if mapElement<start or mapElement>end: else line[0]+(mapElement-start)
+    match = mapElement if mapElement<start or mapElement>end: else line[0]+(mapElement-start)
 
     if match!=mapElement: return match
     
