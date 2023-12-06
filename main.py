@@ -63,9 +63,8 @@ xCorres = lambda a, b, start, end: a if a<start or a>end else b+(a-start)
 
 #need to check the end of the range is still in match.
 
-def checkRange(pair, destPair, sourcePair, mapData):
+def correspond(pair, destPair, sourcePair, mapData):
   #The range is start+range-1
-  
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
     startPair, endPair = pair[0], pair[0]+pair[1]-1
@@ -92,16 +91,17 @@ def checkRange(pair, destPair, sourcePair, mapData):
     else: #startPair<start
       if endPair<start:
         destPair.append(pair[0], pair[1])
+        break
       elif endPair=start:
         matched = xCorres(endPair, line[0],start, end)
         destPair.append(matched, 0)
+        break
       else: #endPair>start:
         sourcePair.append(startPair, startPair-start)
         matched = xCorres(start, line[0], start, end)
         endMatch = endPair-start+1
-        destPair.append(matched, endMatch), 
-
-  return match(pair[0], pair[1]), tuple()
+        destPair.append(matched, endMatch)
+        break
 
 
 #main 
@@ -121,43 +121,43 @@ locations=[]
 for seed in seedPairs:
   print(pair)
     #print(seed)
-  s2SMatch = checkRange(seed, seed2SoilMap)
+  s2SMatch = correspond(seed, seed2SoilMap)
   #print(f"s2SMatch = {s2SMatch}")
   soilPairs.append(s2SMatch[0])
   if not s2SMatch[1]: seedPairs.append(s2SMatch[1]) 
     
 for soil in soilPairs:
-  s2FMatch = checkRange(soil, soil2FertlMap)
+  s2FMatch = correspond(soil, soil2FertlMap)
   #print(f"s2FMatch = {s2FMatch}")
   fertlPairs.append(s2FMatch[0])
   if not s2FMatch[1]: soilPairs.append(s2FMatch[1])
 
 for fertl in fertlPairs:
-  f2WMatch = checkRange(fertl, fertl2WaterMap)
+  f2WMatch = correspond(fertl, fertl2WaterMap)
   #print(f"f2WMatch = {f2WMatch}")
   waterPairs.append(f2WMatch[0])
   if not f2WMatch[1]: fertlPairs.append(f2WMatch[1])
 
 for water in waterPairs:
-  w2LMatch = checkRange(water, water2LightMap)
+  w2LMatch = correspond(water, water2LightMap)
   #print(f"w2LMatch = {w2LMatch}")
   lightPairs.append(w2LMatch[0])
   if not w2LMatch[1]: waterPairs.append(w2LMatch[1])
 
 for light in lightPairs:
-  l2TMatch = checkRange(light, light2TempMap)
+  l2TMatch = correspond(light, light2TempMap)
   #print(f"l2TMatch = {l2TMatch}")
   tempPairs.append(l2TMatch[0])
   if not l2TMatch[1]: lightPairs.append(l2TMatch[1])
 
 for temp in tempPairs:
-  t2HMatch = checkRange(temp, temp2HumidMap)
+  t2HMatch = correspond(temp, temp2HumidMap)
   #print(f"t2HMatch = {t2HMatch}")
   humidPairs.append(t2HMatch[0])
   if not t2HMatch[1]: tempPairs.append(t2HMatch[1])
 
 for humid in humidPairs:
-  h2LMatch = checkRange(humid, humid2LocMap)
+  h2LMatch = correspond(humid, humid2LocMap)
   #print(f"h2LMatch = {h2LMatch}")
   locationPairs.append(h2LMatch[0])
   if not h2LMatch[1]: humidPairs.append(h2LMatch[1])
