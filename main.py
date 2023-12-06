@@ -68,17 +68,55 @@ def checkRange(pair, mapData):
   
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
-    startPair, endPair = pair[0] pair[0]+pair[1]-1
+    startPair, endPair = pair[0], pair[0]+pair[1]-1
 
+    if startPair>=start:
+      if endPair<=end: # seed range is fully inside
+        matched = xCorres(startPair, line[0], start, end)
+        match = (matched, pair[1]) # tuple match is a soil correspondent tuple
+        return match, tuple()
+      else: #endPair>end:
+        if startPair< end:
+          endMatch = line[2]+line[1]-matched #+1 & -1 cancel out
+          matched = xCorres(startPair, line[0], start, end)
+          match = (matched, endMatch)
+          appendPair = (endMatch+1,  endPair-end) #appending unmatched bottom bit as seed and range
+          return match, appendPair
+        elif startPair == end:
+          endMatch==0
+          matched = xCorres(startPair, line[0], start, end)
+          match = (matched, 0)
+          return match, tuple()
+        else: return (pair[0], pair[1]), tuple()
+    else: #startPair<start
+      if endPair<start:
+        match = (pair[0], pair[1])
+        return match, tuple()
+      elif endPair=start:
+        matched = xCorres(endPair, line[0],start, end)
+        match=(matched, 0)
+        return match, tuple()
+      else: #endPair>start:
+        appendPair = (startPair, startPair-start)
+        matched = xCorres(start, line[0], start, end)
+        endMatch = endPair-start+1
+        match = (matched, endMatch), 
+        return match, appendPair
 
-      
-  return(match)
-
-
+  return match(pair[0], pair[1]), tuple()
 
 
 #main 
 seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap, humid2LocMap =  readFile2Data()
+
+soilPairs=[]
+fertlPairs=[]
+waterPairs=[] 
+lightPairs=[]
+tempPairs=[]
+humidPairs=[]
+locationPairs=[]
+
 
 locations=[]
 #correspond=[]
