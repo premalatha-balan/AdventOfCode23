@@ -57,17 +57,18 @@ def readFile2Data():
   f.close
   return(seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
-def checkRange(mapElement, mapData):
+def checkRange(pair, mapData):
   #The range is start+range-1
   
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
     
-    match = mapElement - start + line[0] if mapElement >= start and mapElement <= end else mapElement
+    match = pair[0] - start + line[0] if pair[0] >= start and pair[0] <= end else pair[0]
     
-    if match!=mapElement: return match
+    if match!=pair[0]: return match
       
   return(match)
+
 
 
 
@@ -80,28 +81,27 @@ for pair in seedPairs:
   print(pair)
   #corres=[]
   #corres.append(seed)
-  for i in range(pair[0], pair[0]+pair[1]):
     #print(seed)
-    s2SMatch = checkRange(i, seed2SoilMap)
-    #corres.append(s2SMatch)
-    #print(f"s2SMatch = {s2SMatch}")
-    s2FMatch = checkRange(s2SMatch, soil2FertlMap)
-    #corres.append(s2FMatch)
-    #print(f"s2FMatch = {s2FMatch}")
-    f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
-    #corres.append(f2WMatch)
-    #print(f"f2WMatch = {f2WMatch}")
-    w2LMatch = checkRange(f2WMatch, water2LightMap)
-    #corres.append(w2LMatch)
-    #print(f"w2LMatch = {w2LMatch}")
-    l2TMatch = checkRange(w2LMatch, light2TempMap)
-    #corres.append(l2TMatch)
-    #print(f"l2TMatch = {l2TMatch}")
-    t2HMatch = checkRange(l2TMatch, temp2HumidMap)
-    #corres.append(t2HMatch)
-    #print(f"t2HMatch = {t2HMatch}")
-    h2LMatch = checkRange(t2HMatch, humid2LocMap)
-    locations.append(h2LMatch)
+  s2SMatch = checkRange(pair[0], seed2SoilMap)
+  #corres.append(s2SMatch)
+  #print(f"s2SMatch = {s2SMatch}")
+  s2FMatch = checkRange(s2SMatch, soil2FertlMap)
+  #corres.append(s2FMatch)
+  #print(f"s2FMatch = {s2FMatch}")
+  f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
+  #corres.append(f2WMatch)
+  #print(f"f2WMatch = {f2WMatch}")
+  w2LMatch = checkRange(f2WMatch, water2LightMap)
+  #corres.append(w2LMatch)
+  #print(f"w2LMatch = {w2LMatch}")
+  l2TMatch = checkRange(w2LMatch, light2TempMap)
+  #corres.append(l2TMatch)
+  #print(f"l2TMatch = {l2TMatch}")
+  t2HMatch = checkRange(l2TMatch, temp2HumidMap)
+  #corres.append(t2HMatch)
+  #print(f"t2HMatch = {t2HMatch}")
+  h2LMatch = checkRange(t2HMatch, humid2LocMap)
+  locations.append(h2LMatch)
   print(locations)
   y=input("enter a key: ")
     #print(h2LMatch)
