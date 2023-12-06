@@ -69,10 +69,8 @@ def checkRange(pair, mapData):
     start, end = line[1], line[1]+line[2]-1 
     startPair, endPair = pair[0] pair[0]+pair[1]-1
 
-    
-    match[0] = startPair if startPair<start or startPair >end: else line[0]+(startPair-start)
-    
-    match[1] = endPair if endPair <start or endPair >end: else line[0]+(endPair-start) #need to refine this
+    match[0] = x(startPair, line[0], start, end)
+    match[1] = x(endPair, line[0], start, end) # need to refine this
     
     if match[0]!=startPair: break
       
