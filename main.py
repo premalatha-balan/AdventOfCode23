@@ -115,52 +115,28 @@ locationPairs=[]
 locations=[]
 
 for seed in seedPairs:
-  print(pair)
-    #print(seed)
-  map(correspond, )
-  s2SMatch = correspond(seed, seed2SoilMap)
-  #print(f"s2SMatch = {s2SMatch}")
-  soilPairs.append(s2SMatch[0])
-  if not s2SMatch[1]: seedPairs.append(s2SMatch[1]) 
+  correspond(seed, soilPairs, seedPairs, seed2SoilMap)
     
 for soil in soilPairs:
-  s2FMatch = correspond(soil, soil2FertlMap)
-  #print(f"s2FMatch = {s2FMatch}")
-  fertlPairs.append(s2FMatch[0])
-  if not s2FMatch[1]: soilPairs.append(s2FMatch[1])
+  correspond(soil, fertlPairs, soilPairs, soil2FertlMap)
 
 for fertl in fertlPairs:
-  f2WMatch = correspond(fertl, fertl2WaterMap)
-  #print(f"f2WMatch = {f2WMatch}")
-  waterPairs.append(f2WMatch[0])
-  if not f2WMatch[1]: fertlPairs.append(f2WMatch[1])
+  correspond(fertl, waterPairs, fertlPairs, fertl2WaterMap)
 
 for water in waterPairs:
-  w2LMatch = correspond(water, water2LightMap)
-  #print(f"w2LMatch = {w2LMatch}")
-  lightPairs.append(w2LMatch[0])
-  if not w2LMatch[1]: waterPairs.append(w2LMatch[1])
+  correspond(water, lightPairs, waterPairs, water2LightMap)
 
 for light in lightPairs:
-  l2TMatch = correspond(light, light2TempMap)
-  #print(f"l2TMatch = {l2TMatch}")
-  tempPairs.append(l2TMatch[0])
-  if not l2TMatch[1]: lightPairs.append(l2TMatch[1])
+  correspond(light, tempPairs, lightPairs, light2TempMap)
 
 for temp in tempPairs:
-  t2HMatch = correspond(temp, temp2HumidMap)
-  #print(f"t2HMatch = {t2HMatch}")
-  humidPairs.append(t2HMatch[0])
-  if not t2HMatch[1]: tempPairs.append(t2HMatch[1])
+  correspond(temp, humidPairs, tempPairs, temp2HumidMap)
 
 for humid in humidPairs:
-  h2LMatch = correspond(humid, humid2LocMap)
-  #print(f"h2LMatch = {h2LMatch}")
-  locationPairs.append(h2LMatch[0])
-  if not h2LMatch[1]: humidPairs.append(h2LMatch[1])
+  correspond(humid, locationPairs, humidPairs, humid2LocMap)
 
   #print(locationPairs)
-  y=input("enter a key: ")
+  #y=input("enter a key: ")
     #print(h2LMatch)
     #corres.append(h2LMatch)
     #correspond.append(corres)
