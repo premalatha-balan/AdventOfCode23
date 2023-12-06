@@ -57,13 +57,16 @@ def readFile2Data():
   f.close
   return(seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
+
+#need to check the end of the range is still in match.
+
 def checkRange(pair, mapData):
   #The range is start+range-1
   
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
-    
-    match = pair[0] - start + line[0] if pair[0] >= start and pair[0] <= end else pair[0]
+
+    return pair[0] if pair[0]<start or pair[0]>end: else line[0]+(pair[0]-start)
     
     if match!=pair[0]: return match
       

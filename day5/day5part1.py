@@ -54,13 +54,11 @@ def checkRange(mapElement, mapData):
   #print(f"len = {len(mapData)}")
   for line in mapData:
     start, end = line[1], line[1]+line[2]-1 
-    #print(f"mapEl = {mapElement}, line = {line}, start = {start} end = {end} ")
-    
-    match = mapElement - start + line[0] if mapElement >= start and mapElement <= end else mapElement
-    #print(f"match = {match}")
-    #y=input("enter a key: ")
-    
+
+    return mapElement if mapElement<start or mapElement>end: else line[0]+(mapElement-start)
+
     if match!=mapElement: return match
+    
       
   return(match)
 
