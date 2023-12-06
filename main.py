@@ -58,7 +58,8 @@ def readFile2Data():
   return(seedPairs, seed2SoilMap, soil2FertlMap, fertl2WaterMap, water2LightMap, light2TempMap, temp2HumidMap,humid2LocMap)
 
 
-x = lambda a, b, start, end: a if a<start or a>end else b+(a-start)
+xCorres = lambda a, b, start, end: a if a<start or a>end else b+(a-start)
+
 
 #need to check the end of the range is still in match.
 
@@ -69,10 +70,7 @@ def checkRange(pair, mapData):
     start, end = line[1], line[1]+line[2]-1 
     startPair, endPair = pair[0] pair[0]+pair[1]-1
 
-    match[0] = x(startPair, line[0], start, end)
-    match[1] = x(endPair, line[0], start, end) # need to refine this
-    
-    if match[0]!=startPair: break
+
       
   return(match)
 
