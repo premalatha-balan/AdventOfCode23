@@ -119,33 +119,52 @@ locationPairs=[]
 
 
 locations=[]
-#correspond=[]
-for pair in seedPairs:
+
+for seed in seedPairs:
   print(pair)
-  #corres=[]
-  #corres.append(seed)
     #print(seed)
-  s2SMatch = checkRange(pair[0], seed2SoilMap)
-  #corres.append(s2SMatch)
+  s2SMatch = checkRange(seed, seed2SoilMap)
   #print(f"s2SMatch = {s2SMatch}")
-  s2FMatch = checkRange(s2SMatch, soil2FertlMap)
-  #corres.append(s2FMatch)
+  soilPairs.append(s2SMatch[0])
+  if not s2SMatch[1]: seedPairs.append(s2SMatch[1]) 
+    
+for soil in soilPairs:
+  s2FMatch = checkRange(soil, soil2FertlMap)
   #print(f"s2FMatch = {s2FMatch}")
-  f2WMatch = checkRange(s2FMatch, fertl2WaterMap)
-  #corres.append(f2WMatch)
+  fertlPairs.append(s2FMatch[0])
+  if not s2FMatch[1]: soilPairs.append(s2FMatch[1])
+
+for fertl in fertlPairs:
+  f2WMatch = checkRange(fertl, fertl2WaterMap)
   #print(f"f2WMatch = {f2WMatch}")
-  w2LMatch = checkRange(f2WMatch, water2LightMap)
-  #corres.append(w2LMatch)
+  waterPairs.append(f2WMatch[0])
+  if not f2WMatch[1]: fertlPairs.append(f2WMatch[1])
+
+for water in waterPairs:
+  w2LMatch = checkRange(water, water2LightMap)
   #print(f"w2LMatch = {w2LMatch}")
-  l2TMatch = checkRange(w2LMatch, light2TempMap)
-  #corres.append(l2TMatch)
+  lightPairs.append(w2LMatch[0])
+  if not w2LMatch[1]: waterPairs.append(w2LMatch[1])
+
+for light in lightPairs:
+  l2TMatch = checkRange(light, light2TempMap)
   #print(f"l2TMatch = {l2TMatch}")
-  t2HMatch = checkRange(l2TMatch, temp2HumidMap)
-  #corres.append(t2HMatch)
+  tempPairs.append(l2TMatch[0])
+  if not l2TMatch[1]: lightPairs.append(l2TMatch[1])
+
+for temp in tempPairs:
+  t2HMatch = checkRange(temp, temp2HumidMap)
   #print(f"t2HMatch = {t2HMatch}")
-  h2LMatch = checkRange(t2HMatch, humid2LocMap)
-  locations.append(h2LMatch)
-  print(locations)
+  humidPairs.append(t2HMatch[0])
+  if not t2HMatch[1]: tempPairs.append(t2HMatch[1])
+
+for humid in humidPairs:
+  h2LMatch = checkRange(humid, humid2LocMap)
+  #print(f"h2LMatch = {h2LMatch}")
+  locationPairs.append(h2LMatch[0])
+  if not h2LMatch[1]: humidPairs.append(h2LMatch[1])
+
+  #print(locationPairs)
   y=input("enter a key: ")
     #print(h2LMatch)
     #corres.append(h2LMatch)
