@@ -43,6 +43,7 @@ def readFile2Data():
   
   humid2LocMap = inData[inData.index("humidity-to-location map:")+1:]
   humid2LocMap = [tuple(map(int, line.split())) for line in humid2LocMap]
+
   #print(f"humid2LocMap = {humid2LocMap}")
 
   f.close
@@ -51,40 +52,94 @@ def readFile2Data():
 
 xCorres = lambda a, b, start, end: b+(a-start) if (a>=start and a<=end) else a
 
+"""def xCorres(a, b, start, end):
+  print(f"a {a}, b {b} start {start}, end {end}")
+  if a<start or a>end:
+    print(f"a {a}, b {b} start {start}, end {end}")
+    print(f"return {b+(a-start)}")
+    y = input("enter a key: ")
+    return b+(a-start)"""
+
+#need to check the end of the range is still in match.
 
 def correspond(pair, destPair, sourcePair, mapData):
   #The range is start+range-1
   for line in mapData:
-    start, end = line[1], xEnd(line[1], line[2]) 
-    startPair, endPair = pair[0], xEnd(pair[0], pair[1])
+    start, end = line[1], line[1]+line[2]-1 
+    startPair, endPair = pair[0], pair[0]+pair[1]-1
+    #print(f"start = {start}, end = {end}, startPair = {startPair}, endPair = {endPair}, line[0] {line[0]}, line {line}")
+    #y = input("enter a key at the beginning: ")
 
-    if startPair>=start:           
+    if startPair>=start:
+      #print(f"yes, {startPair} >= {start}")
+      #y = input("enter a key at if begin: ")
+            
       if endPair<=end: # seed range is fully inside
         matched = xCorres(startPair, line[0], start, end)
         destPair.append((matched, pair[1])) # tuple match is a soil correspondent tuple
-        #print(f"destPair = {(matched, pair[1])} at fully inside ")
+        #print("case: fully in")
+        #print(f"matched = {matched}")
+        #print(f"desPair = {destPair}")
+        #y=input("enter a key: ")
       else: #endPair>end:
+        #print(f"endPair {endPair} > end {end}")
+        #y = input("enter a key at endpair is less than endSoil: ")
+        
         if startPair< end:
+          #print(f"startPair {startPair}, start {start}, end{end}, line[0] {line[0]} ")
+          #y=input("enter a key: ")
           matched = xCorres(startPair, line[0], start, end)
-          endMatch = end-startPair#+1 & -1 cancel out
+          #print(f"matched = {matched}")
+          #y=input("enter a key: ")
+          endMatch = line[2]+line[1]-matched #+1 & -1 cancel out
           destPair.append((matched, endMatch))
-          #print(f"destPair = {(matched, endMatch)} at end ")
+          #sourcePair.append((end+1,  endPair-end)) #appending unmatched bottom bit as seed and range
+          #print("case: unmatched bottom bit")
+          #print(f"matched = {matched}")
+          #print(f"destPair = {destPair}")
+          #print(f"sourcePair = {(end+1, endPair-end)}")
+          #y=input("enter a key: ")
         elif startPair == end:
+          #print("no not a single line")
           endMatch==0
           matched = xCorres(startPair, line[0], start, end)
           destPair.append((matched, 0))
+          #sourcePair.append((start, startPair-start))
+          #print("case: just a line at startPair")
+          #print(f"matched = {matched}")
+          #print(f"destPair = {destPair}")
+          #print(f"sourcePair = {(startPair+1, endPair-end)}")
+          #y=input("enter a key: ")
         else:
+          #print("yes, at fully bottom")
           if (pair[0], pair[1]) not in destPair: destPair.append((pair[0], pair[1]))
+          #print(f"case: fully out bottom")
+          #print(f"destPair = {destPair}")
+          #y=input("enter a key: ")
     else: #startPair<start
       if endPair<start:
         if (pair[0], pair[1]) not in destPair: destPair.append((pair[0], pair[1]))
+        #print(f"case: fully out at top")
+        #print(f"destPair = {destPair}")
+        #y=input("enter a key: ")
       elif endPair==start:
         matched = xCorres(endPair, line[0],start, end)
         destPair.append((matched, 0))
+        #sourcePair.append((startPair, start-startPair))
+        #print("case: just a line at endPair")
+        #print(f"matched = {matched}")
+        #print(f"destPair = {destPair} and sourcePair {startPair, start-startPair} ")
+        #y=input("enter a key: ")
       else: #endPair>start:
+        #print("case: unmatched top bit")
+        #print(f"startPair {startPair} endPair {endPair}, start {start}, end{end}, line[0] {line[0]} ")
+        #sourcePair.append((startPair, start-startPair))
         matched = xCorres(start, line[0], start, end)
         endMatch = endPair-start+1
         destPair.append((matched, endMatch))
+        #print(f"matched = {matched}")
+        #print(f"destPair = {destPair}, sourcePair = {(startPair, start-startPair)}")
+        #y=input("enter a key: ")
 
 tuple2starts = lambda tuplein : tuplein[0]
 #tuple2data = lambda tuplein : a, b
@@ -103,68 +158,38 @@ tempPairs=[]
 humidPairs=[]
 locationPairs=[]
 
-xEnd = lambda start, range: start+range-1 #use this
-
-def xCombineFindRange (tuple1, tuple2):
-  firstEnd = xEnd(tuple1[0], tuple1[1])
-  if firstEnd>=tuple2[0]:
-    secondEnd = xEnd(tuple2[0], tuple2[1])
-    range = secondEnd - tuple1[0]+1
-    return(tuple1[0], range)
-
-xCombine = lambda tuple1, tuple2: (tuple1[0], xCombineFindRange(tuple1, tuple2))
-
-
-def xTidyTuples(tupleList):
-  combined_tuples = map(lambda i: xCombine(tupleList[i], tupleList[i + 1]), range(0, len(tupleList), 2))
-  new_tuple_list = list(zip(combined_tuples, tupleList[1::2]))
-
-  return new_tuple_list
-
 
 locations=[]
-seedPairs.sort()
-print(f"seedPairs = {seedPairs} ")
-print(f"length of seedslist = {len(seedPairs)} ")
-y=input("enter a key: ")
+
 for seed in seedPairs:
   correspond(seed, soilPairs, seedPairs, seed2SoilMap)
+#print(f"seedPairs = {seedPairs}")
+#y = input("enter a key: ")
+#print(f"soilPairs = {soilPairs}")
+#y = input("enter a key: ")
 
-print(f"soilPairs = {soilPairs} ")
-print(f"length of soilPairs = {len(soilPairs)} ")
-y=input("enter a key: ")
+#[correspond(i) for i in j for j in bigLst]
+# [seedPairs, soilPairs...]
 for soil in soilPairs:
   correspond(soil, fertlPairs, soilPairs, soil2FertlMap)
 
-print(f"fertlPairs = {fertlPairs} ")
-print(f"length of fertlPairs = {len(fertlPairs)} ")
-y=input("enter a key: ")
 for fertl in fertlPairs:
   correspond(fertl, waterPairs, fertlPairs, fertl2WaterMap)
 
-print(f"waterPairs = {waterPairs} ")
-print(f"length of waterPairs = {len(waterPairs)} ")
-y=input("enter a key: ")
 for water in waterPairs:
   correspond(water, lightPairs, waterPairs, water2LightMap)
 
-print(f"lightPairs = {lightPairs} ")
-print(f"length of lightPairs = {len(lightPairs)} ")
-y=input("enter a key: ")
 for light in lightPairs:
   correspond(light, tempPairs, lightPairs, light2TempMap)
 
-print(f"tempPairs = {tempPairs} ")
-print(f"length of tempPairs = {len(tempPairs)} ")
-y=input("enter a key: ")
 for temp in tempPairs:
   correspond(temp, humidPairs, tempPairs, temp2HumidMap)
 
-print(f"humidPairs = {humidPairs} ")
-print(f"length of humidPairs = {len(humidPairs)} ")
-y=input("enter a key: ")
 for humid in humidPairs:
   correspond(humid, locationPairs, humidPairs, humid2LocMap)
+
+for loc in locationPairs:
+  correspond(loc, locations, locationPairs, humid2LocMap)
 
 print("before locations print")
 print(locationPairs)
