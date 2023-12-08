@@ -1,5 +1,5 @@
 
-#Need to work on combining the pairs and reducing for loops
+#Need to work on combining the pairs and reducing 
 
 def readFile2Data():
   f=open("day5_input.txt", "r")
