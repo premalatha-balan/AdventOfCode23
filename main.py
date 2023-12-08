@@ -10,27 +10,25 @@ def readFile2Data():
 #Time:        42     89     91     89
 #Distance:   308   1170   1291   1467
 
-getDist = lambda t: [(t-i)*i for i in range(1,t)]
 
-def boatRace(tupleIn):
-  dist=list(filter(lambda a: True if a>tupleIn[1] else False, getDist(tupleIn[0])))
-  #print(dist)
-  return len(dist)
+getDist = lambda t: [(t-i)*i for i in range(1,int(t/2+1))] #getDist is a function
 
-data = [(42,308), (89,1170), (91,1291), (89,1467)]
+print(getDist(42))
+y = input("enter a key: ")
 
-ways = boatRace(data[0])
+boatRace = lambda tupIn: len(list(filter(lambda a: True if a>tupIn[1] else False, getDist(tupIn[0]))))
+
+#data = [(42,308), (89,1170), (91,1291), (89,1467)] #part1
+data=(42899189, 308117012911467) #part2
+
+#ways = list(map(boatRace, data)) #part 1
+ways = boatRace(data) #part 2
 print(ways)
 
-ways = list(map(boatRace, data))
-print(ways)
-result=1
+"""result=1
 for i in range(len(ways)):
   result*=ways[i]
-print(result)
+print(result)"""
 
-#Part1 needs cleaning up. Part 2 needs properly using some functions and recursions maybe
 
-dist = getDist(42899189) #It is not as easy as I thought
-print(dist)
 
