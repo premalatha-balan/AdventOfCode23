@@ -45,6 +45,8 @@ def findTypeHand(hand):
   
 
 def asRank4two(hand1, hand2):
+  #print("I am in asRank4two function")
+  #y=input("enter a key: ")
   rank1, rank2 = 0, 0
   #print(f"hand1 = {hand1} and hand2 = {hand2} ")
   for card1, card2 in zip(hand1, hand2):
@@ -62,11 +64,13 @@ hands_dict = readFile2Data()
 hands = list(hands_dict.keys())
 #print(f"hands {hands} ")
 bids = list(hands_dict.values())
+#print(f"bids {bids} ")
 
 card2value = {card:value for card, value in zip("23456789TJQKA", range(1,14))}
-#print(card2value["A"])
+#print(f"card2value, {card2value}")
 
 typeforHands_lst = list(map(findTypeHand, hands))
+#print(f"tpyeforHands_lst {typeforHands_lst}")
 typesHands = [(hand, findTypeHand(hand)) for hand in hands]
 #print(f"typesHands {typesHands} ")
 #typesforHands_indices = list(enumerate(typeforHands_lst))
@@ -83,14 +87,17 @@ type_counts = {t: typeforHands_lst.count(t) for t in types}
 #print(f"type_counts {type_counts}")
 
 secOrder = {
-    t: [h for h, type_ in typesHands if type_ == t] 
-    for t in types if any(type_ == t for _, type_ in typesHands)
+  t: [h for h, type_ in typesHands if type_ == t] 
+  for t in types if any(type_ == t for _, type_ in typesHands)
 }
 #print(f"secOrder {secOrder}")
+
 
 rank=0
 
 for type in secOrder:
+  #print(type, secOrder[type])
+  #y = input("enter a key: ")
   if len(secOrder[type]) == 1:
     rank+=1
     #print(secOrder[type][0])
@@ -99,16 +106,27 @@ for type in secOrder:
     #print(hands_dict[secOrder[type][0]])
   else:
     #print(type, secOrder[type])
+   
     for i in range(1, len(secOrder[type])):
       #print(f"calling {secOrder[type][i-1]} and {secOrder[type][i]} ")
       rank1, rank2 = asRank4two(secOrder[type][i-1], secOrder[type][i])
-      hands_dict[secOrder[type][i-1]].append(rank+rank1+1)
-      hands_dict[secOrder[type][i]].append(rank+rank2+1)
-      rank+=2
-      #print(hands_dict[secOrder[type][i-1]], hands_dict[secOrder[type][i]])
+      #print(f"{rank1} for {secOrder[type][i-1]} and {rank2} for {secOrder[type][i-1]}" )
+
+      if len(hands_dict[secOrder[type][i-1]])==1:
+        hands_dict[secOrder[type][i-1]].append(rank+rank1+1)
+      else:
+        hands_dict[secOrder[type][i-1]][1]=rank+rank1+1
+      if len(hands_dict[secOrder[type][i]])==1:
+        hands_dict[secOrder[type][i]].append(rank+rank2+1)
+      else:
+        hands_dict[secOrder[type][i]][1]=rank+rank2+1
+      rank=rank+rank1 if rank1>rank2 else rank+rank2
+      #print(f" {secOrder[type][i-1]} and {secOrder[type][i]} ")
+      #print(f" {hands_dict[secOrder[type][i-1]]}, {hands_dict[secOrder[type][i]]}")
+      #y = input("enter a key: ")
 
 bids_rank = list(hands_dict.values())
-print(bids_rank)
+#print(bids_rank)
 
 result = sum([bid*rank for (bid, rank) in bids_rank])
 print(result)
