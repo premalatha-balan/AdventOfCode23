@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 """
 def readFile2Data():
  
@@ -34,6 +36,10 @@ def findTypeHand(hand):
     type = "highCard"
   return type
 
+def getRank4Pairs(type):
+  return
+
+
 
 def winner(hand1, hand2):
   if hand1>hand2:
@@ -54,9 +60,35 @@ typesforHands_indices = list(enumerate(typeforHands_lst))
 print(typeforHands_lst)
 
 types = ("highCard", "onePair", "twoPair", "threeKind", "fullHouse", "fourKind", "fiveKind")
-for i in types:
-  if typeforHands_lst.count(i)>1:
-    print(i)
+
+#secOrder ={(type:[].append(hands[i]) if type in typeforHands_lst and typeforHands_lst.count(type)>1 for type in types) for i in range(len(hands)) }
+
+
+#secOrder = {type: [hands[i] for i in range(len(hands)) if type in typeforHands_lst and typeforHands_lst.count(type) > 1] for type in types}
+#print(f"secOrder = {secOrder}")
+secOrder = {type:[] for type in typeforHands_lst}
+
+
+secOrder = defaultdict(list)
+
+
+secOrder = {t: [h for h, type in zip(hands, typeforHands_lst) if type == t] 
+            for t in types if typeforHands_lst.count(t) > 1}
+
+
+"""for t, h in zip(typeforHands_lst, hands):
+    if t in types and typeforHands_lst.count(t) > 1:
+        secOrder[t].append(h)"""
+
+#secOrder = dict(secOrder)
+
+"""
+for type in types:
+  if type in typeforHands_lst and typeforHands_lst.count(type)>1:
+    for i in range(len(hands)):
+      secOrder[type].append(hands[i]) if typeforHands_lst[i]==type else None"""
+      
+print(secOrder)
 
 #hands_dict = {hands_dict[i]: bids[i] for i in range(len(hands_dict))}}
 
