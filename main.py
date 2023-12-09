@@ -1,5 +1,19 @@
-from collections import defaultdict
+def readFile2Data():
+  f=open("day7_input.txt", "r")
+  hands_dict={}
+  hands_dict = {(line.strip().split())[0]: [int((line.strip().split())[1])] for line in f}
+  #for line in f:
+    #line=line.strip().split()
+    #print(f"line {line}, {len(line) }")
+    #print(line[0], line[1])
+    #hands_dict.update( {line[0]: int(line[1])})
+    #print(hands_dict)
+    #y = input("enter a key: ")
+  #print(hands_dict)
+  f.close
+  return(hands_dict)
 
+  
 def findTypeHand(hand):
   #print(hand)
   findType=[]
@@ -42,8 +56,9 @@ def asRank4two(hand1, hand2):
     if rank1> rank2 or rank2 > rank1: return rank1, rank2
   return rank1, rank2
 
+hands_dict = readFile2Data()
 
-hands_dict={"32T3K": [765], "T55J5": [684], "KK677": [28], "KTJJT": [220], "QQQJA": [483]}
+#hands_dict={"32T3K": [765], "T55J5": [684], "KK677": [28], "KTJJT": [220], "QQQJA": [483]}
 hands = list(hands_dict.keys())
 #print(f"hands {hands} ")
 bids = list(hands_dict.values())
@@ -93,7 +108,7 @@ for type in secOrder:
       #print(hands_dict[secOrder[type][i-1]], hands_dict[secOrder[type][i]])
 
 bids_rank = list(hands_dict.values())
-
+print(bids_rank)
 
 result = sum([bid*rank for (bid, rank) in bids_rank])
 print(result)
