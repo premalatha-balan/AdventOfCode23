@@ -46,29 +46,32 @@ def findTypeHand(hand):
 
 def compare(hand1, hand2):
   #print("I am in asRank4two function")
+  #print(f"hand1 {hand1}, hand2 {hand2} ")
   #y=input("enter a key: ")
   rank1, rank2 = 0, 0
   #print(f"hand1 = {hand1} and hand2 = {hand2} ")
   for card1, card2 in zip(hand1, hand2):
     #print(f"card1 = {card1} and card2 = {card2} ")
     value1, value2 = card2value[card1], card2value[card2]
-    return True if value1 < value2 else False
+    if value1 < value2 : return True
+    elif value1 > value2 : return False 
+    #print(f"rank1 = {rank1} and rank2 = {rank2} ")
+  #print(f"rank1 = {rank1} and rank2 = {rank2} ")
+  #y=input("enter a key: ")
+
+  
 
 def qSort(inList):
   if len(inList) <= 1:
     return inList
   else:
     pivot = inList[0]
-    left, right = [], []
-    for item in inList[1:]:
-      #if item < pivot:
-      if compare(item, pivot):
-        left.append(item)
-      else:
-        right.append(item)
-    return qsort(left) + [pivot] + qsort(right)
+    left = [x for x in inList[1:] if compare(x, pivot)]
+    right = [x for x in inList[1:] if not compare(x, pivot)]
+    return qSort(left) + [pivot] + qSort(right)
     
-  
+
+
 
 
 hands_dict = readFile2Data()
@@ -93,8 +96,8 @@ types = ("highCard", "onePair", "twoPair", "threeKind", "fullHouse", "fourKind",
 
 
 # Combine hands and typeforHands_lst into a single iterable for reuse
-#hads_types_tuples = list(zip(hands, typeforHands_lst))
-#print(f"combined_data = {hads_types_tuples} ")
+#typesHands = [(hand, findTypeHand(hand)) for hand in hands]
+#print(f"typesHands = {typesHands} ")
 # Store the counts of each type for reuse
 type_counts = {t: typeforHands_lst.count(t) for t in types}
 #print(f"type_counts {type_counts}")
@@ -103,25 +106,21 @@ secOrder = {
   t: [h for h, type_ in typesHands if type_ == t] 
   for t in types if any(type_ == t for _, type_ in typesHands)
 }
-print(f"secOrder {secOrder}")
-y = input("enter a key: ")
 
 
 rank=0
 
-for type in secOrder:
-  #print(type, secOrder[type])
-  #y = input("enter a key: ")
-  if len(secOrder[type]) == 1:
-    rank+=1
-    #print(secOrder[type][0])
-    #print(hands_dict[secOrder[type][0]])
-    hands_dict[secOrder[type][0]].append(rank)
-    #print(hands_dict[secOrder[type][0]])
-  else:
-    #print(type, secOrder[type])
-   
 
+secOrder = {t: qSort(secOrder[t]) for t in secOrder}
+
+
+rank = 1
+for card_type in secOrder:
+    for index, card in enumerate(secOrder[card_type]):
+        hands_dict[card].append(rank + index)
+    rank += len(secOrder[card_type])
+
+    
 
 bids_rank = list(hands_dict.values())
 #print(bids_rank)
