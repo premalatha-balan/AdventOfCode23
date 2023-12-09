@@ -5,22 +5,33 @@ def readFile2Data():
 
 #ile2DreadFata()
 
-
-types = {5: "fiveKind",
-       4:"fourKind",
-       3:"threeKind",
-      32:"fullHouse",
-       2:"twoPair",
-       1:"onePair",
-       0:"highCard"}
-
-def chkType (hand):
-  type = "fiveKind" if all(hand.count(i) == 5 for i in hand) else "fourKind"
-  type = "fourKind" if all(hand.count(i) == 4 for i in hand) else "threeKind"
-  type = "FullHouse" if all(hand.count(i) == 3 for i in hand) and if all(hand.count(i) == 2 for i in hand) else "threeKind"
-  type = "twoPair" if all(hand.count(i) == 2 for i in hand) and if all(hand.count(i) == 2 for i in hand) else "threeKind"
-  type = "onePair" if all(hand.count(i) == 2 for i in hand) and if all(hand.count(i) == 2 for i in hand) else "threeKind"
-
+def findTypeHand(hand):
+  print(hand)
+  findType=[]
+  findType = {i:sum([i==x for x in hand]) for i in hand if i not in findType}
+  print(f"{findType}")
+  values = list(findType.values())
+  print(f"values {values} ")
+  if 5 in values:
+    type = "fiveKind"
+    print(f"{type}")
+  elif 4 in values:
+    type = "fourKind"
+    print(f"{type}")
+  elif 3 in values and 2 not in values:
+    type = "threeKind"
+    print(f"{type}")
+  elif 3 in values and 2 in values:
+    type = "fullHouse"
+    print(f"{type}")
+  elif values.count(2)==2:
+    type = "twoPair"
+    print(f"{type}")
+  elif values.count(2)==1:
+    type = "onePair"
+    print(f"{type}")
+  else:
+    type = "highCard"
   return type
 
 
@@ -32,18 +43,28 @@ def winner(hand1, hand2):
   else:
     return 0
 
-hands=[("32T3K", 765), ("T55J5", 684), ("KK677", 28), ("KTJJT", 220), ("QQQJA", 483)]
-for hand in hands:
-  #print(f"{hand[0]} {hand[1]} {chkType(hand[0])} {chkType(hand[1])} {winner(hand[1],hand[0])}")  
-  print(hand, chkType(hand[0]))
+#hands=[("32T3K", 765), ("T55J5", 684), ("KK677", 28), ("KTJJT", 220), ("QQQJA", 483)]
+hands_dict={"32T3K": [765], "T55J5": [684], "KK677": [28], "KTJJT": [220], "QQQJA": [483]}
+hands = list(hands_dict.keys())
+bids = list(hands_dict.values())
 
-"""for i in hand:
-  if hand.count(i) == 3:
-    newstr = "".join([j for j in hand if j != i])
-    type = "fullHouse" if newstr.count(i) == 2 else "threeKind"
-  elif hand.count(i) == 2:
-    newstr = "".join([j for j in hand if j != i])
-    #type = "twoPair" if newstr.count(i) == 2 else "onePair"
-    print(newstr, i)
-  else:
-    type = "highCard""""
+
+typeforHands_lst = list(map(findTypeHand, hands))
+typesforHands_indices = list(enumerate(typeforHands_lst))
+print(typeforHands_lst)
+
+types = ("highCard", "onePair", "twoPair", "threeKind", "fullHouse", "fourKind", "fiveKind")
+for i in types:
+  if typeforHands_lst.count(i)>1:
+    print(i)
+
+#hands_dict = {hands_dict[i]: bids[i] for i in range(len(hands_dict))}}
+
+
+"""for i in range(len(typeforHands_lst)):
+  print(f"{hands[i]} {typeforHands_lst[i]}")
+  #hands_dict[hands[i]]+="".join(typeforHands[i])
+  hands_dict[hands[i]].append(typeforHands_lst[i]) #enable if needed
+  #print(f"{hands_dict[hands[i]]}")"""
+  
+
