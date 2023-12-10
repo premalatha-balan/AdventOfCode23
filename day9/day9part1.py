@@ -42,7 +42,7 @@ for line in seqBigLst:
 
   for i in range(len(diffLst)-2,-1,-1):
     #print(diffLst[i])
-    diffLst[i].append(diffLst[i][0]-diffLst[i+1][0])
+    diffLst[i].append(diffLst[i][-1]+diffLst[i+1][-1])
     #print(f"{diffLst[i]} after appending the addition")
     #y = input("enter a key: ")
 
@@ -50,7 +50,7 @@ for line in seqBigLst:
   #diffLst.pop(-1)
 
   
-  sumTot+=diffLst[0][0]
+  sumTot+=diffLst[0][-1]
 
 
 print(sumTot)
