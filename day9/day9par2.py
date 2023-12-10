@@ -2,6 +2,12 @@ import copy
 
 def readFile2Data():
   f=open("day9_input.txt", "r")
+  #for line in f:
+    #line = line.strip().split()
+    #print(line)
+    #y = input("enter a key: ")
+  seqBigLst = [line.strip().split() for line in f]
+  seqBigLst = [list(map(int, seq)) for seq in seqBigLst]
   
   f.close
   return(seqBigLst)
