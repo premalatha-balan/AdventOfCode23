@@ -25,22 +25,30 @@ def findTypeHand(hand):
     type = "fiveKind"
     #print(f"{type}")
   elif 4 in values:
-    type = "fourKind"
+    type = "fiveKind" if "J" in hand else "fourKind"
     #print(f"{type}")
   elif 3 in values and 2 not in values:
-    type = "threeKind"
+    if "J" in hand:
+      if hand.count("J") == 1: type = "fourKind"
+      if hand.count("J") == 2: type = "fiveKind"
+    else: 
+      type = "threeKind"
     #print(f"{type}")
   elif 3 in values and 2 in values:
-    type = "fullHouse"
+    type = "fiveKind" if "J" in hand else "fullHouse"
     #print(f"{type}")
   elif values.count(2)==2:
     type = "twoPair"
+    if "J" in hand:
+      if hand.count("J") == 1: type = "fullHouse"
+      if hand.count("J") == 2: type = "fourKind"
     #print(f"{type}")
   elif values.count(2)==1:
-    type = "onePair"
-    #print(f"{type}")
+    type = "threeKind" if "J" in hand and (hand.count("J") == 1 or hand.count("J") == 2) else "onePair"
+  #print(f"{type}")
   else:
-    type = "highCard"
+    type = "onePair" if "J" in hand else "highCard"
+  type = "Not in there"
   return type
   
 
@@ -53,6 +61,7 @@ def compare(hand1, hand2):
   for card1, card2 in zip(hand1, hand2):
     #print(f"card1 = {card1} and card2 = {card2} ")
     value1, value2 = card2value[card1], card2value[card2]
+    #value1 = 13 if card1 == "J" else card2value[card]
     if value1 < value2 : return True
     elif value1 > value2 : return False 
     #print(f"rank1 = {rank1} and rank2 = {rank2} ")
@@ -92,7 +101,7 @@ typesHands = [(hand, findTypeHand(hand)) for hand in hands]
 #typesforHands_indices = list(enumerate(typeforHands_lst))
 #print(f"typeforHands_lst {typeforHands_lst}")
 
-types = ("highCard", "onePair", "twoPair", "threeKind", "fullHouse", "fourKind", "fiveKind")
+types = ("highCard", "onePair", "twoPair","fullHouse", "threeKind", "fourKind", "fiveKind")
 
 
 # Combine hands and typeforHands_lst into a single iterable for reuse
@@ -112,6 +121,13 @@ rank=0
 
 
 secOrder = {t: qSort(secOrder[t]) for t in secOrder}
+
+for type in secOrder:
+  print(f"{type}: {secOrder[type]}")
+  rank += type_counts[type]
+  print(f"rank = {rank}, lenght = {len(secOrder[type])}")
+  y = input("enter a key: ")
+#print(f"Second Order Ranking: {secOrder}" )
 
 
 rank = 1
