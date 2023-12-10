@@ -82,7 +82,7 @@ hands = list(hands_dict.keys())
 bids = list(hands_dict.values())
 #print(f"bids {bids} ")
 
-card2value = {card:value for card, value in zip("J23456789TQKA", range(1,14))}
+card2value = {card:value for card, value in zip("23456789TJQKA", range(1,14))}
 #print(f"card2value, {card2value}")
 
 typeforHands_lst = list(map(findTypeHand, hands))
