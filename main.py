@@ -16,10 +16,13 @@ def readFile2Data():
   
 def findTypeHand(hand):
   #print(hand)
+  #hand="JJ28J"
   findType=[]
   findType = {i:sum([i==x for x in hand]) for i in hand if i not in findType}
   #print(f"{findType}")
+  #y = input("enter a key: ")
   values = list(findType.values())
+  #type="highCard"
   #print(f"values {values} ")
   if 5 in values:
     type = "fiveKind"
@@ -28,9 +31,11 @@ def findTypeHand(hand):
     type = "fiveKind" if "J" in hand else "fourKind"
     #print(f"{type}")
   elif 3 in values and 2 not in values:
+    #print("I am in here")
     if "J" in hand:
-      if hand.count("J") == 1: type = "fourKind"
+      if hand.count("J") == 1 or hand.count("J") == 3: type = "fourKind"
       if hand.count("J") == 2: type = "fiveKind"
+      
     else: 
       type = "threeKind"
     #print(f"{type}")
@@ -48,7 +53,9 @@ def findTypeHand(hand):
   #print(f"{type}")
   else:
     type = "onePair" if "J" in hand else "highCard"
-  type = "Not in there"
+  #print(f"type {type} ")
+  #y = input("enter a key: ")
+  #type = "Not in there"
   return type
   
 
@@ -101,7 +108,7 @@ typesHands = [(hand, findTypeHand(hand)) for hand in hands]
 #typesforHands_indices = list(enumerate(typeforHands_lst))
 #print(f"typeforHands_lst {typeforHands_lst}")
 
-types = ("highCard", "onePair", "twoPair","fullHouse", "threeKind", "fourKind", "fiveKind")
+types = ("highCard", "onePair", "twoPair", "threeKind", "fullHouse", "fourKind", "fiveKind")
 
 
 # Combine hands and typeforHands_lst into a single iterable for reuse
@@ -122,11 +129,11 @@ rank=0
 
 secOrder = {t: qSort(secOrder[t]) for t in secOrder}
 
-for type in secOrder:
+"""for type in secOrder:
   print(f"{type}: {secOrder[type]}")
   rank += type_counts[type]
   print(f"rank = {rank}, lenght = {len(secOrder[type])}")
-  y = input("enter a key: ")
+  y = input("enter a key: ")"""
 #print(f"Second Order Ranking: {secOrder}" )
 
 
