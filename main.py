@@ -1,4 +1,6 @@
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def readFile2Data():
   f=open("day8_input.txt", "r")
@@ -15,57 +17,57 @@ def readFile2Data():
   f.close
   return(instructions, data)
 
+def build_graph(data):
+    G = nx.DiGraph()
+    for node, moves in data.items():
+        G.add_node(node)
+        for move, neighbor in enumerate(moves):
+            G.add_edge(node, neighbor, move=move)
+    return G
+
+def perform_moves(graph, start_nodes, instructions):
+    current_nodes = set(start_nodes)
+    step = 0
+    #print(f"current nodes = {current_nodes} at {step} steps ")
+    
+
+    while True:
+        i = instructions[step]
+        next = 0 if i == "L" else 1
+      
+        new_nodes = set()
+        for node in current_nodes:
+            neighbors = list(graph.successors(node))
+            #print(f"{node} => {neighbors} ")
+            #y = input("enter a key: ")
+            if neighbors:
+              if len(neighbors)==2:
+                #print(f"neighbours {neighbors} ")
+                new_nodes.add(neighbors[next])
+                #print(f"new_nodes {new_nodes} ")
+                #y = input("enter a key: ")
+              elif len(neighbors)==1:
+                neighbors.append(neighbors[0])
+                #print(f"neighbours {neighbors} ")
+                new_nodes.add(neighbors[next])
+                #print(f"new_nodes {new_nodes} ")
+                #y = input("enter a key: ")
+
+        current_nodes = new_nodes
+        step += 1
+
+        if all(node[2] == "Z" for node in current_nodes):
+            break
+        elif step == len(instructions) - 2:
+            instructions *= 2
+
+    return step
+
 instructions, data = readFile2Data()
-
-node_lst = list(data.keys())
-#print(f"all nodes = {node_lst} ")
-#node_starts = [node for node in node_lst if node[2]=="A"]
-node_starts = np.array([node for node in node_lst if node[2] == "A"])
-ends = np.array([node[2]=="Z" for node in node_starts])
-#node_ends = [node for node in node_lst if node[2]=="Z"]
-#print(f"starts = {node_starts} and len = {len(node_starts)} ")
-#print(f"ends = {node_ends} and len = {len(node_ends)} ")
+#print(data.items())
 #y=input("enter a key: ")
+graph = build_graph(data)
+start_nodes = [node for node in data if node[2] == "A"]
 
-step=0
-prevLength=0
-#move = lambda node, next: data[node][next]
-length = len(instructions)
-print(f"length = {length} ")
-print(f"dir = {instructions[step]} entering in node = {node_starts} , len {len(instructions)} at step {step} ")
-while True:
-  length=len(instructions)
-  i=instructions[step]
-  if step==length-1 or step==prevLength+1 or step==prevLength: 
-    print(f"entering at {step}, dir ={i} and node = {node_starts} and length = {length} ")
-    y = input("enter a key: ")
-  #print(f"dir = {i}entering in node = {node_starts} , len {len(instructions)} at step {step} ")
-  #print(f"{node_starts} at the beginning")
-  next = 0 if i=="L" else 1
-  #move = lambda node: data[node][next]
-  #node_starts = np.array([data[node][next] for node in node_starts])
-  node_starts = list(map(lambda node: data[node][next], node_starts))
-  step+=1
-  #print(f"{node_starts} after {step} move")
-  #y = input("enter a key: ")
-  
-  ends = np.array([node[2]=="Z" for node in node_starts])
-
-  if any(ends):
-    print(f"one of them have reached the path")
-    print(f"at {step} node_starts {node_starts} ends {ends}")
-    y = input("enter a key: ")
-  if all(ends): break
-  #print(f"ends = {ends} at step = {step} ")
-  #y = input("enter a key: ")
-
-  if step==length: 
-
-    instructions=instructions + instructions
-    prevLength = length
-    length=len(instructions)
-    print(f"repeating dir at {step}, dir ={i} and node = {node_starts} and length = {length} ")
-    y = input("enter a key: ")
-    #print(f"len = {len(instructions)} ")
-
-print(step)
+result = perform_moves(graph, start_nodes, instructions)
+print(result)
