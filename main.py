@@ -27,25 +27,41 @@ step = 0
 path=[]
 length = len(instructions)
 node=node_starts[0]
-matches = []
+matches = {}
 while True:
   dir = instructions[step]
   neighbour = data[node]
   #next_path = (neighbour, dir)
   if neighbour  in path:
     print(f"yes, we have a match")
-    matches.append(path.index(neighbour))
+    #matches.append(path.index(neighbour))
+    match_posn = path.index(neighbour)
+    matches.update({neighbour:(match_posn, step)})
     print(f"matches {matches} ")
     y = input("enter a key: ")
-    if len(matches)>1:
-      match_length = matches[1]-matches[0]
-      dir_first = instructions[matches[0]:matches[1]]
-      dir_next = instructions[matches[1]:matches[1]+matches[1]]
-      print(f"dir_first = {dir_first} and dir_next = {dir_next}")
-      print(f"{dir_first==dir_next}")
-      y = input("enter a key: ")
+    if length<step+step:
+      instructions=instructions*2
+      length = len(instructions)
+    for i in range(0,step):
+      dir = instructions[i]
+      if dir == instructions[step+i]:
+        print(neighbours_lst[i], neighbours_lst[step+i], i)
+
+        y = input("enter a key: ")
+        match_move = i 
+      else:
+        break
+
+    print(node)
+    node = node_lst[match_move]
+    print(f"match move {match_move}, node = {node} ")
+    y = input("enter a key: ")
+    
+        
+        
 
   path.append(neighbour)
+  #print(f"path {path}")
   next = 0 if dir == "L" else 1
   node = data[node][next]
   step+=1
