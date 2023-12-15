@@ -50,6 +50,7 @@ def get_move(neigh):
     if pipe == "|": yl-=1 #down move to [0][1]
     elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    y1,x1 = yl, xl #if condtion checking is not necessary as y1==0 and x1==0 
   if connected[1][0]: #left
     pipe = neigh[1][0]
     yl,xl=0,0
@@ -98,8 +99,9 @@ def get_move(neigh):
 
 
 
-def connect (neigh):
+"""def connect (neigh):
   centre = neigh[1][1] if neigh[1][1]!="S" else "7"
+  #connected= np.array([[None,None, None], [None,centre, None], [None,None, None]])
   #check these connections first draw all these and check
   left = neigh[1][0] if centre == "-" or centre == "J" or centre == "7" else None
   right = neigh[1][2]  if centre == "-" or centre == "L" or centre == "F" else None
@@ -111,7 +113,45 @@ def connect (neigh):
   up = True if up=="|" or up=="F" or up=="7" else False
   down = True if down=="|" or down=="L" or down=="J" else False
   connected = np.array([[None, up, None], [left, None, right,], [None, down, None]])
-  return (connected)
+  return (connected)"""
+
+def connect(neigh):
+  centre = neigh[1][1] if neigh[1][1]!="S" else "7"
+  connected= np.array([[None,None, None], [None,centre, None], [None,None, None]])
+  if centre == "-":
+    left = neigh[1][0] 
+    right = neigh[1][2]
+    connected[1][0] = True if left=="-" or left=="F" or left=="L" else False #left
+    connected[1][2] = True if right=="-" or right=="7" or right=="J" else False #right
+  elif centre == "|":
+    up = neigh[0][1]
+    down = neigh[2][1]
+    connected[0][1] = True if up=="|" or up=="F" or up=="7" else False #up
+    connected[2][1] = True if down=="|" or down=="L" or down=="J" else False #down
+  elif centre == "L":
+    up = neigh[0][1]
+    right = neigh[1][2]
+    connected[0][1] = True if up=="|" or up=="F" or up=="7" else False #up
+    connected[1][2] = True if right=="-" or right=="7" or right=="J" else False #right
+  elif centre == "F":
+    right = neigh[1][2]
+    down = neigh[2][1]
+    connected[1][2] = True if right=="-" or right=="7" or right=="J" else False #right
+    connected[2][1] = True if down=="|" or down=="L" or down=="J" else False #down
+  elif centre == "J":
+    up = neigh[0][1]
+    left = neigh[1][0]
+    connected[0][1] = True if up=="|" or up=="F" or up=="7" else False #up
+    connected[1][0] = True if left=="-" or left=="F" or left=="L" else False #left
+  elif centre == "7":
+    left = neigh[1][0]
+    down = neigh[2][1]
+    connected[1][0] = True if left=="-" or left=="F" or left=="L" else False #left
+    connected[2][1] = True if down=="|" or down=="L" or down=="J" else False #down
+  print(f"connected = {connected}")
+  z = input("enter a key: ")
+  return connected
+    
   
 
 #initialising
@@ -129,6 +169,7 @@ step=0
 neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
 print(neigh)
 y1,x1,y2,x2 = get_move(neigh)
+print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
 y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
 path1, path2= np.array([y1,x1]), np.array([y2,x2])
 step+=1 #moved one step
@@ -140,4 +181,13 @@ print(check_bounds(y1,x1,r,c))
 
 neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else None
 print(neigh)
+y,x=y1,x1
+print(f"y,x = {y},{x}")
+y1,x1,y2,x2 = get_move(neigh)
+print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
+y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
+path1, path2= np.array([y1,x1]), np.array([y2,x2])
+step+=1 #moved one step
+print(y1,x1,y2,x2)
+print(f"path1 = {path1}, path2 = {path2}")
 z = input("enter a key: ")
