@@ -25,8 +25,8 @@ def readFile2Data():
   return tiles
 
 
-def check_bounds(y,x, r, c):
-  if y+1>=r  or y-1<0 or x+1>=c or x-1<0 : return False
+def check_bounds(yin,xin, r, c):
+  if yin+1>=r  or yin-1<0 or xin+1>=c or xin-1<0 : return False
   else: return True
 
 
@@ -41,42 +41,40 @@ def get_neigh(el,y,x):
 def get_move(neigh):
   
   connected = connect(neigh)
-  y1,x1 = 1,1
-  y2,x2 = 1,1
+  y1,x1 = 0,0
+  y2,x2 = 0,0
 
   if connected[0][1]: #up
     pipe = neigh[0][1]
-    yl,xl=1,1
+    yl,xl=0,0
     if pipe == "|": yl-=1 #down move to [0][1]
     elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
   if connected[1][0]: #left
     pipe = neigh[1][0]
-    yl,xl=1,1
+    yl,xl=0,0
     if pipe == "-": xl-=1 #left
     elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
     elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
-    if y1==1 and x1==1: y1,x1 = yl, xl
+    if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
   if connected[1][2]: #right
     pipe = neigh[1][2]
-    yl,xl=1,1
+    yl,xl=0,0
     if pipe == "-": xl+=1 #right move to [1][2]
     elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
     elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
-    if y1==1 and x1==1: y1,x1 = yl, xl
+    if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
   if connected[2][1]: #down
     pipe = neigh[2][1]
-    yl,xl=1,1
+    yl,xl=0,0
     if pipe == "|": yl+=1#down move to [2][1]
     elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
     elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
-    if y1==1 and x1==1: y1,x1 = yl, xl
+    if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
   
-  print(f"yl = {yl}, xl = {xl}")
-  z = input("enter a key: ")
   return (y1,x1,y2,x2)
 
   """
@@ -101,10 +99,12 @@ def get_move(neigh):
 
 
 def connect (neigh):
-  left = neigh[1][0]
-  right = neigh[1][2]
-  up = neigh[0][1]
-  down = neigh[2][1]
+  centre = neigh[1][1] if neigh[1][1]!="S" else "7"
+  #check these connections first
+  left = neigh[1][0] if centre == "-" or centre == "J" or centre == "7" else None
+  right = neigh[1][2]  if centre == "-" or centre == "J" or centre == "7" else None
+  up = neigh[0][1] if centre == "|" or centre == "F" or centre == "7" else None
+  down = neigh[2][1] if centre = "|" or centre == "L" or centre == "J" else None"
   #connected = np.array([[None,None,None], [None,None,None], [None,None,None]])
   left = True if left=="-" or left=="F" or left=="L" else False
   right = True if right=="-" or right=="7" or right=="J" else False
@@ -121,7 +121,7 @@ print(r, c)
 
 y, x = np.where(tiles == "S")
 y,x=y[0],x[0]
-print(x, y)
+print(y,x)
 step=0
 
 #start while true loop here
@@ -129,7 +129,15 @@ step=0
 neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
 print(neigh)
 y1,x1,y2,x2 = get_move(neigh)
+y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
 path1, path2= np.array([y1,x1]), np.array([y2,x2])
 step+=1 #moved one step
 print(y1,x1,y2,x2)
+print(f"path1 = {path1}, path2 = {path2}")
+z = input("enter a key: ")
+
+print(check_bounds(y1,x1,r,c))
+
+neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else None
+print(neigh)
 z = input("enter a key: ")
