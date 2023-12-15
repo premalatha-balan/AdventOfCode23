@@ -5,20 +5,25 @@ import math
 def readFile2Data():
   f=open("day10_input.txt", "r")
   tile_row = []
-  tile2Dlst =[[]]
   tiles=np.array([])
   #tiles = np.array(tile2Dlst)
   count = 0
+  tile_row = ["." for i in range(142)]
+  tiles = np.r_[tiles, tile_row]
   for line in f:
     line=line.strip().split()
     for i in line:
       tile_row = [c for c in i]
-      tiles = np.r_[tiles,tile_row]
+      tile_row.insert(0, ".")
+      tile_row.append(".")
+      tiles = np.r_[tiles, tile_row]
       #tiles = np.append(tiles,tile_row) #does the same too
       count+=1
   length = len(tile_row)
-  tiles = tiles.reshape(count, length)
-  #print(tiles.shape)
+  tile_row = ["." for i in range(length)]
+  tiles = np.r_[tiles,tile_row]
+  tiles = tiles.reshape(count+2, length)
+  print(tiles.shape)
   #print(tile2Dlst.shape)
   #tile2Dlst = np.array(tile2Dlst)
   f.close
@@ -236,8 +241,8 @@ while True:
     tiles[cy1,cx1] = "S"
     #print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")
   if y1==0 and x1==0: 
+    print("Doing path1 breaking point")
     print(f"neigh = {neigh}")
-    #print("Doing path1 breaking point")
     #print(f"y1,x1 =  {y1},{x1}")
     z = input("enter a key: ")
     break #if no more moves
@@ -262,9 +267,10 @@ while True:
     tiles[cy2,cx2] = "S"
     #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")
   if y2==0 and x2==0:
-    #print("Doing path2 breaking point")
+    print("Doing path2 breaking point")
+    print(f"neigh = {neigh}")
     #print(f"y2,x2 =  {y2},{x2}")
-    #z = input("enter a key: ")
+    z = input("enter a key: ")
     break #if no more moves
   #print(f"y2,x2 =  {y2},{x2}")
   y2,x2 = y+y2, x+x2
