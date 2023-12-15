@@ -38,8 +38,8 @@ def get_neigh(el,y,x):
   neigh=np.array([[tiles[y-1][x-1],tiles[y-1][x],tiles[y-1][x+1]], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [tiles[y+1][x-1],tiles[y+1][x],tiles[y+1][x]]])
   return neigh"""
 
-def get_move(neigh):
-  
+#starting
+def get_move_start(neigh):
   connected = connect(neigh)
   y1,x1 = 0,0
   y2,x2 = 0,0
@@ -78,6 +78,42 @@ def get_move(neigh):
   
   return (y1,x1,y2,x2)
 
+  #generic one #assuming there is only one path
+def get_move(neigh):
+  connected = connect(neigh)
+  y1,x1 = 0,0
+
+  if connected[0][1]: #up
+    pipe = neigh[0][1]
+    yl,xl=0,0
+    if pipe == "|": yl-=1 #down move to [0][1]
+    elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    y1,x1 = yl, xl #if condtion checking is not necessary as y1==0 and x1==0 
+  elif connected[1][0]: #left
+    pipe = neigh[1][0]
+    yl,xl=0,0
+    if pipe == "-": xl-=1 #left
+    elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
+    elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    y1,x1 = yl, xl
+  elif connected[1][2]: #right
+    pipe = neigh[1][2]
+    yl,xl=0,0
+    if pipe == "-": xl+=1 #right move to [1][2]
+    elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
+    elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    y1,x1 = yl, xl
+  elif connected[2][1]: #down
+    pipe = neigh[2][1]
+    yl,xl=0,0
+    if pipe == "|": yl+=1#down move to [2][1]
+    elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
+    elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
+    y1,x1 = yl, xl
+
+  return (y1,x1)
+  
   """
   left = moves[y][x-1]
   right = moves[y][x+1]
@@ -148,8 +184,8 @@ def connect(neigh):
     down = neigh[2][1]
     connected[1][0] = True if left=="-" or left=="F" or left=="L" else False #left
     connected[2][1] = True if down=="|" or down=="L" or down=="J" else False #down
-  print(f"connected = {connected}")
-  z = input("enter a key: ")
+  #print(f"connected = {connected}")
+  #z = input("enter a key: ")
   return connected
     
   
@@ -157,37 +193,74 @@ def connect(neigh):
 #initialising
 tiles = readFile2Data()
 r, c = tiles.shape
-print(r, c)
+#print(r, c)
 
 y, x = np.where(tiles == "S")
 y,x=y[0],x[0]
-print(y,x)
+#print(y,x)
 step=0
 
-#start while true loop here
-#getting data through functions
+
+#getting data through functions for the starting poistion
 neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
-print(neigh)
-y1,x1,y2,x2 = get_move(neigh)
-print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
+#print(neigh)
+y1,x1,y2,x2 = get_move_start(neigh)
+#print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
 y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
 path1, path2= np.array([y1,x1]), np.array([y2,x2])
 step+=1 #moved one step
-print(y1,x1,y2,x2)
-print(f"path1 = {path1}, path2 = {path2}")
-z = input("enter a key: ")
+#print(y1,x1,y2,x2)
+#print(f"path1 = {path1}, path2 = {path2}")
+#z = input("enter a key: ")
 
-print(check_bounds(y1,x1,r,c))
+#print(check_bounds(y1,x1,r,c))
 
-neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else None
-print(neigh)
-y,x=y1,x1
-print(f"y,x = {y},{x}")
-y1,x1,y2,x2 = get_move(neigh)
-print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
-y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
-path1, path2= np.array([y1,x1]), np.array([y2,x2])
-step+=1 #moved one step
-print(y1,x1,y2,x2)
-print(f"path1 = {path1}, path2 = {path2}")
-z = input("enter a key: ")
+#start while true loop here
+while True:
+  #print("Doing path1")
+  neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
+  #print(neigh)
+  y,x=y1,x1
+  #print(f"y,x = {y},{x}")
+  y1,x1 = get_move(neigh)
+  if x1==0 and y1==0: 
+    print("Doing path1")
+    print(f"y1,x1 =  {y1},{x1}")
+    z = input("enter a key: ")
+    break #if no more moves
+  #print(f"y1,x1 =  {y1},{x1}")
+  y1,x1 = y+y1, x+x1
+  path1= np.array([y1,x1])
+  tiles[y,x]= "S"
+  #print(y1,x1)
+  #print(f"path1 = {path1}")
+  #z = input("enter a key: ")
+  
+  #print("Now doing path2")
+  neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
+  #print(neigh)
+  y,x=y2,x2
+  #print(f"y,x = {y},{x}")
+  y2,x2 = get_move(neigh)
+  if y2==0 and x2==0:
+    print("Doing path2")
+    print(f"y2,x2 =  {y2},{x2}")
+    z = input("enter a key: ")
+    break #if no more moves
+  #print(f"y2,x2 =  {y2},{x2}")
+  y2,x2 = y+y2, x+x2
+  path2= np.array([y2,x2])
+  tiles[y,x]= "S"
+  #print(y2,x2)
+  #print(f"path1 = {path2}")
+  #z = input("enter a key: ")
+  
+  #counting steps
+  step+=1 #moved one step
+  #print(f"step = {step}")
+  #z = input("enter a key: ")
+  
+  #checking if the paths are the same
+  #if no more moves, then we should have reached the converging point of path1 and path2
+
+print(f"step = {step}")
