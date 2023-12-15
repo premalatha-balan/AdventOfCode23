@@ -100,11 +100,11 @@ def get_move(neigh):
 
 def connect (neigh):
   centre = neigh[1][1] if neigh[1][1]!="S" else "7"
-  #check these connections first
+  #check these connections first draw all these and check
   left = neigh[1][0] if centre == "-" or centre == "J" or centre == "7" else None
-  right = neigh[1][2]  if centre == "-" or centre == "J" or centre == "7" else None
-  up = neigh[0][1] if centre == "|" or centre == "F" or centre == "7" else None
-  down = neigh[2][1] if centre = "|" or centre == "L" or centre == "J" else None"
+  right = neigh[1][2]  if centre == "-" or centre == "L" or centre == "F" else None
+  up = neigh[0][1] if centre == "|" or centre == "J" or centre == "L" else None
+  down = neigh[2][1] if centre = "|" or centre == "F" or centre == "7" else None"
   #connected = np.array([[None,None,None], [None,None,None], [None,None,None]])
   left = True if left=="-" or left=="F" or left=="L" else False
   right = True if right=="-" or right=="7" or right=="J" else False
