@@ -31,7 +31,7 @@ def check_bounds(yin,xin, r, c):
 
 
 def get_neigh(el,y,x):
-  neigh=np.array([[None,tiles[y-1][x],None], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [None,tiles[y+1][x],None]])
+  neigh=np.array([[tiles[y-1][x-1],tiles[y-1][x],tiles[y-1][x+1]], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [tiles[y+1][x-1],tiles[y+1][x],tiles[y+1][x+1]]])
   return neigh
 
 """def get_neigh(el,y,x):
@@ -82,6 +82,7 @@ def get_move_start(neigh):
 def get_move(neigh):
   connected = connect(neigh)
   y1,x1 = 0,0
+  cy1,cx1 = 0,0
 
   if connected[0][1]: #up
     pipe = neigh[0][1]
@@ -90,13 +91,16 @@ def get_move(neigh):
     elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     y1,x1 = yl, xl #if condtion checking is not necessary as y1==0 and x1==0 
+    cy1,cx1=-1,0 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[1][0]: #left
+    #tiles[y+1][x] = "S"
     pipe = neigh[1][0]
     yl,xl=0,0
     if pipe == "-": xl-=1 #left
     elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
     elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     y1,x1 = yl, xl
+    cy1,cx1=0,-1 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[1][2]: #right
     pipe = neigh[1][2]
     yl,xl=0,0
@@ -104,6 +108,7 @@ def get_move(neigh):
     elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
     elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     y1,x1 = yl, xl
+    cy1,cx1=0,1 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[2][1]: #down
     pipe = neigh[2][1]
     yl,xl=0,0
@@ -111,8 +116,9 @@ def get_move(neigh):
     elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
     elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
     y1,x1 = yl, xl
+    cy1,cx1=1,0 #needed to change to the additive values to get to that position rather than the position itself
 
-  return (y1,x1)
+  return (y1,x1,cy1,cx1)
   
   """
   left = moves[y][x-1]
@@ -197,7 +203,7 @@ r, c = tiles.shape
 
 y, x = np.where(tiles == "S")
 y,x=y[0],x[0]
-#print(y,x)
+print(f"start at y,x = {y},{x}")
 step=0
 
 
@@ -217,15 +223,22 @@ step+=1 #moved one step
 
 #start while true loop here
 while True:
-  #print("Doing path1")
+  #print("\n\nDoing path1")
   neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
   #print(neigh)
   y,x=y1,x1
-  #print(f"y,x = {y},{x}")
-  y1,x1 = get_move(neigh)
-  if x1==0 and y1==0: 
-    print("Doing path1")
-    print(f"y1,x1 =  {y1},{x1}")
+  #print(f"at y,x = {y},{x}")
+  y1,x1,cy1,cx1 = get_move(neigh)
+  
+  if (y1!=0 and x1!=0):
+    #print(f"change at cy,cx = {cy1},{cx1}")
+    cy1,cx1 = y+cy1, x+cx1
+    tiles[cy1,cx1] = "S"
+    #print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")
+  if y1==0 and x1==0: 
+    print(f"neigh = {neigh}")
+    #print("Doing path1 breaking point")
+    #print(f"y1,x1 =  {y1},{x1}")
     z = input("enter a key: ")
     break #if no more moves
   #print(f"y1,x1 =  {y1},{x1}")
@@ -236,26 +249,36 @@ while True:
   #print(f"path1 = {path1}")
   #z = input("enter a key: ")
   
-  #print("Now doing path2")
-  neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
+  #print("\n\nNow doing path2")
+  neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]]) 
+  #need to do cases for the boundary conditions
   #print(neigh)
   y,x=y2,x2
-  #print(f"y,x = {y},{x}")
-  y2,x2 = get_move(neigh)
+  #print(f"at y,x = {y},{x}")
+  y2,x2,cy2,cx2 = get_move(neigh)
+  if (y2!=0 and x2!=0):
+    #print(f"change at cy,cx = {cy2},{cx2}")
+    cy2,cx2 = y+cy2,x+cx2
+    tiles[cy2,cx2] = "S"
+    #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")
   if y2==0 and x2==0:
-    print("Doing path2")
-    print(f"y2,x2 =  {y2},{x2}")
-    z = input("enter a key: ")
+    #print("Doing path2 breaking point")
+    #print(f"y2,x2 =  {y2},{x2}")
+    #z = input("enter a key: ")
     break #if no more moves
   #print(f"y2,x2 =  {y2},{x2}")
   y2,x2 = y+y2, x+x2
   path2= np.array([y2,x2])
   tiles[y,x]= "S"
   #print(y2,x2)
-  #print(f"path1 = {path2}")
+  #print(f"path2 = {path2}")
   #z = input("enter a key: ")
   
-  #counting steps
+  #counting steps & setting up before next move
+  #tiles[cy1,cx1] = "S"
+  #print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")
+  #tiles[cy2,cx2] = "S"
+  #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")
   step+=1 #moved one step
   #print(f"step = {step}")
   #z = input("enter a key: ")
