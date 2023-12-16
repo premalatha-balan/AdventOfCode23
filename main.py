@@ -3,12 +3,12 @@ import copy
 import math
 
 def readFile2Data():
-  f=open("testdata.txt", "r")
+  f=open("day10_input.txt", "r")
   tile_row = []
   tiles=np.array([])
   #tiles = np.array(tile2Dlst)
   count = 0
-  tile_row = ["." for i in range(7)]
+  tile_row = ["." for i in range(142)]
   tiles = np.r_[tiles, tile_row]
   for line in f:
     line=line.strip().split()
@@ -178,7 +178,7 @@ def get_move(neigh):
   return (connected)"""
 
 def connect(neigh):
-  centre = neigh[1][1] if neigh[1][1]!="S" else "F"
+  centre = neigh[1][1] if neigh[1][1]!="S" else "7"
   connected= np.array([[None,None, None], [None,centre, None], [None,None, None]])
   if centre == "-":
     left = neigh[1][0] 
@@ -229,74 +229,74 @@ step=0
 
 #getting data through functions for the starting poistion
 neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
-print(neigh)
+#print(neigh)
 y1,x1,y2,x2 = get_move_start(neigh)
-print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
+#print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
 y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
 path1, path2= np.array([y1,x1]), np.array([y2,x2])
 step+=1 #moved one step
-print(f"step = {step}")
+#print(f"step = {step}")
 #print(y1,x1,y2,x2)
-print(f"path1 = {path1}, path2 = {path2}")
-z = input("enter a key: ")
+#print(f"path1 = {path1}, path2 = {path2}")
+#z = input("enter a key: ")
 
 #print(check_bounds(y1,x1,r,c))
 
 #start while true loop here
 while True:
-  print("\n\nDoing path1")
+  #print("\n\nDoing path1")
   neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
-  print(neigh)
+  #print(neigh)
   y,x=y1,x1
-  print(f"at y,x = {y},{x}")
+  #print(f"at y,x = {y},{x}")
   y1,x1 = get_move(neigh)
   
   """if (y1!=0 and x1!=0):
-    print(f"change at cy,cx = {cy1},{cx1}")
+    #print(f"change at cy,cx = {cy1},{cx1}")
     cy1,cx1 = y+cy1, x+cx1
     tiles[cy1,cx1] = "S"
-    print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")"""
+    #print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")"""
   if y1==0 and x1==0: 
     print("Doing path1 breaking point")
     print(f"neigh = {neigh}")
     print(f"at y,x = {y}, {x}")
     #print(f"y1,x1 =  {y1},{x1}")
-    z = input("enter a key: ")
+    #z = input("enter a key: ")
     break #if no more moves
-  print(f"y1,x1 =  {y1},{x1}")
+  #print(f"y1,x1 =  {y1},{x1}")
   y1,x1 = y+y1, x+x1
   path1= np.array([y1,x1])
   tiles[y,x]= "S"
   #print(y1,x1)
-  print(f"path1 = {path1}")
-  z = input("enter a key: ")
+  #print(f"path1 = {path1}")
+  #z = input("enter a key: ")
   
-  print("\n\nNow doing path2")
+  #print("\n\nNow doing path2")
   neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]]) 
   #need to do cases for the boundary conditions - padded up instead
-  print(neigh)
+  #print(neigh)
   y,x=y2,x2
-  print(f"at y,x = {y},{x}")
+  #print(f"at y,x = {y},{x}")
   y2,x2 = get_move(neigh)
   """if (y2!=0 and x2!=0):
-    print(f"change at cy,cx = {cy2},{cx2}")
+    #print(f"change at cy,cx = {cy2},{cx2}")
     cy2,cx2 = y+cy2,x+cx2
     tiles[cy2,cx2] = "S"
-    print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")"""
+    #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")"""
   if y2==0 and x2==0:
     print("Doing path2 breaking point")
     print(f"neigh = {neigh}")
     print(f"at y,x = {y},{x}")
     #print(f"y2,x2 =  {y2},{x2}")
-    z = input("enter a key: ")
+    #z = input("enter a key: ")
     break #if no more moves
-  print(f"y2,x2 =  {y2},{x2}")
+  #print(f"y2,x2 =  {y2},{x2}")
   y2,x2 = y+y2, x+x2
   path2= np.array([y2,x2])
   tiles[y,x]= "S"
-  print(y2,x2)
-  print(f"path2 = {path2}")
-  z = input("enter a key: ")
+  #print(y2,x2)
+  #print(f"path2 = {path2}")
+  #z = input("enter a key: ")
   
   #counting steps & setting up before next move
   #tiles[cy1,cx1] = "S"
@@ -304,8 +304,8 @@ while True:
   #tiles[cy2,cx2] = "S"
   #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")
   step+=1 #moved one step
-  print(f"step = {step}")
-  z = input("continuing the while loop. enter a key: ")
+  #print(f"step = {step}")
+  #z = input("continuing the while loop. enter a key: ")
   
   #checking if the paths are the same
   #if no more moves, then we should have reached the converging point of path1 and path2
