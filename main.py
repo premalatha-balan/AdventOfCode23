@@ -1,5 +1,6 @@
 import numpy as np
 from itertools import combinations
+import math
 
 def readFile2Data():
   f=open("day11_input.txt", "r")
@@ -60,5 +61,14 @@ ids = np.array([i for i in range(len(galaxies))])
 #print(ids)
 print(ids.shape)
 print(len(ids))
-
+pairs = list(combinations(ids, 2))
+print(len(pairs))
+for i in pairs:
+  print(i)
+  print(f"first = {galaxies[i[0]]}, and second in the pair is {galaxies[i[1]]}")
+  a2 = (galaxies[i[0]][0][0] - galaxies[i[1]][0][0])**2
+  b2 = (galaxies[i[0]][0][1] - galaxies[i[1]][0][1])**2
+  dist = math.sqrt(a2+b2)
+  print(f"dist = {dist}")
+  z= input("enter a key: ")
 
