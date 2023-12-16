@@ -48,36 +48,46 @@ def get_move_start(neigh):
   connected = connect(neigh)
   y1,x1 = 0,0
   y2,x2 = 0,0
+  
 
   if connected[0][1]: #up
     pipe = neigh[0][1]
     yl,xl=0,0
-    if pipe == "|": yl-=1 #down move to [0][1]
-    elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
-    elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    if pipe=="|" or pipe =="F" or pipe=="7": yl-=1 #down move to [0][1]
+    #code below moved two steps at once at corners. 
+    #if pipe == "|": yl-=1 #down move to [0][1]
+    #elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    #elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     y1,x1 = yl, xl #if condtion checking is not necessary as y1==0 and x1==0 
   if connected[1][0]: #left
     pipe = neigh[1][0]
     yl,xl=0,0
-    if pipe == "-": xl-=1 #left
-    elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
-    elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    if pipe=="-" or pipe =="F" or pipe=="L": xl-=1 #left move to [1][0]
+    #code below moved two steps at once at corners.
+    #if pipe == "-": xl-=1 #left move to [1][0]
+    #elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
+    #elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
+  
   if connected[1][2]: #right
     pipe = neigh[1][2]
     yl,xl=0,0
-    if pipe == "-": xl+=1 #right move to [1][2]
-    elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
-    elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    if pipe=="-" or pipe=="7" or pipe=="J": xl+=1 #right move to [1][2]
+    #code below moved two steps at once at corners.
+    #if pipe == "-": xl+=1 #right move to [1][2]
+    #elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
+    #elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
   if connected[2][1]: #down
     pipe = neigh[2][1]
     yl,xl=0,0
-    if pipe == "|": yl+=1#down move to [2][1]
-    elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
-    elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
+    if pipe=="|" or pipe=="J" or pipe=="L": yl+=1 #down move to [2][1]
+    #code below moved two steps at once at corners.
+    #if pipe == "|": yl+=1#down move to [2][1]
+    #elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
+    #elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
     if y1==0 and x1==0: y1,x1 = yl, xl
     else: y2,x2 = yl, xl
   
@@ -86,44 +96,49 @@ def get_move_start(neigh):
   #generic one #assuming there is only one path
 def get_move(neigh):
   connected = connect(neigh)
-  y1,x1 = 0,0
-  cy1,cx1 = 0,0
+  y1,x1=0,0
+  yl,xl=0,0
+  #cy1,cx1 = 0,0 #do not need to return this, as we were moving twice and markign them without counting.
 
   if connected[0][1]: #up
     pipe = neigh[0][1]
-    yl,xl=0,0
-    if pipe == "|": yl-=1 #down move to [0][1]
-    elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
-    elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    if pipe=="|" or pipe =="F" or pipe=="7": yl-=1 #down move to [0][1]
+    #code below moved two steps at once at corners. 
+    #if pipe == "|": yl-=1 #up move to [0][1]
+    #elif pipe == "F": yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    #elif pipe == "7":  yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     y1,x1 = yl, xl #if condtion checking is not necessary as y1==0 and x1==0 
-    cy1,cx1=-1,0 #needed to change to the additive values to get to that position rather than the position itself
+    #cy1,cx1=-1,0 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[1][0]: #left
     #tiles[y+1][x] = "S"
     pipe = neigh[1][0]
-    yl,xl=0,0
-    if pipe == "-": xl-=1 #left
-    elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
-    elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
+    if pipe=="-" or pipe=="F" or pipe=="L": xl-=1 #left move to [1][0]
+    #code below moved two steps at once at corners.
+    #if pipe == "-": xl-=1 #left
+    #elif pipe == "F": yl,xl = yl+1, xl-1  #leftDown move to [2][0]
+    #elif pipe == "L": yl,xl = yl-1, xl-1  #leftUp move to [0][0]
     y1,x1 = yl, xl
-    cy1,cx1=0,-1 #needed to change to the additive values to get to that position rather than the position itself
+    #cy1,cx1=0,-1 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[1][2]: #right
     pipe = neigh[1][2]
-    yl,xl=0,0
-    if pipe == "-": xl+=1 #right move to [1][2]
-    elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
-    elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
+    if pipe=="-" or pipe=="7" or pipe=="J": xl+=1 #right move to [1][2]
+    #code below moved two steps at once at corners.
+    #if pipe == "-": xl+=1 #right move to [1][2]
+    #elif pipe == "7": yl,xl = yl+1, xl+1 #rightDown move to [2][2]
+    #elif pipe == "J":  yl,xl = yl-1, xl+1 #rightUp move to [0][2]
     y1,x1 = yl, xl
-    cy1,cx1=0,1 #needed to change to the additive values to get to that position rather than the position itself
+    #cy1,cx1=0,1 #needed to change to the additive values to get to that position rather than the position itself
   elif connected[2][1]: #down
     pipe = neigh[2][1]
-    yl,xl=0,0
-    if pipe == "|": yl+=1#down move to [2][1]
-    elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
-    elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
+    if pipe=="|" or pipe=="J" or pipe=="L": yl+=1 #down move to [2][1]
+    #code below moved two steps at once at corners.
+    #if pipe == "|": yl+=1#down move to [2][1]
+    #elif pipe == "J": yl,xl = yl+1, xl-1 #leftDown move to [2][0]
+    #elif pipe == "L": yl,xl = yl+1, xl+1 #leftUp move to [2][2]
     y1,x1 = yl, xl
-    cy1,cx1=1,0 #needed to change to the additive values to get to that position rather than the position itself
+    #cy1,cx1=1,0 #needed to change to the additive values to get to that position rather than the position itself
 
-  return (y1,x1,cy1,cx1)
+  return (y1,x1)
   
   """
   left = moves[y][x-1]
@@ -163,7 +178,7 @@ def get_move(neigh):
   return (connected)"""
 
 def connect(neigh):
-  centre = neigh[1][1] if neigh[1][1]!="S" else "7"
+  centre = neigh[1][1] if neigh[1][1]!="S" else "F"
   connected= np.array([[None,None, None], [None,centre, None], [None,None, None]])
   if centre == "-":
     left = neigh[1][0] 
@@ -209,20 +224,21 @@ r, c = tiles.shape
 y, x = np.where(tiles == "S")
 y,x=y[0],x[0]
 print(f"start at y,x = {y},{x}")
-step=1
+step=0
 
 
 #getting data through functions for the starting poistion
 neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
-#print(neigh)
+print(neigh)
 y1,x1,y2,x2 = get_move_start(neigh)
-#print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
+print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
 y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
 path1, path2= np.array([y1,x1]), np.array([y2,x2])
 step+=1 #moved one step
+print(f"step = {step}")
 #print(y1,x1,y2,x2)
-#print(f"path1 = {path1}, path2 = {path2}")
-#z = input("enter a key: ")
+print(f"path1 = {path1}, path2 = {path2}")
+z = input("enter a key: ")
 
 #print(check_bounds(y1,x1,r,c))
 
@@ -233,13 +249,13 @@ while True:
   print(neigh)
   y,x=y1,x1
   print(f"at y,x = {y},{x}")
-  y1,x1,cy1,cx1 = get_move(neigh)
+  y1,x1 = get_move(neigh)
   
-  if (y1!=0 and x1!=0):
+  """if (y1!=0 and x1!=0):
     print(f"change at cy,cx = {cy1},{cx1}")
     cy1,cx1 = y+cy1, x+cx1
     tiles[cy1,cx1] = "S"
-    print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")
+    print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")"""
   if y1==0 and x1==0: 
     print("Doing path1 breaking point")
     print(f"neigh = {neigh}")
@@ -257,16 +273,16 @@ while True:
   
   print("\n\nNow doing path2")
   neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]]) 
-  #need to do cases for the boundary conditions
+  #need to do cases for the boundary conditions - padded up instead
   print(neigh)
   y,x=y2,x2
   print(f"at y,x = {y},{x}")
-  y2,x2,cy2,cx2 = get_move(neigh)
-  if (y2!=0 and x2!=0):
+  y2,x2 = get_move(neigh)
+  """if (y2!=0 and x2!=0):
     print(f"change at cy,cx = {cy2},{cx2}")
     cy2,cx2 = y+cy2,x+cx2
     tiles[cy2,cx2] = "S"
-    print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")
+    print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")"""
   if y2==0 and x2==0:
     print("Doing path2 breaking point")
     print(f"neigh = {neigh}")
@@ -295,3 +311,5 @@ while True:
   #if no more moves, then we should have reached the converging point of path1 and path2
 
 print(f"step = {step}")
+
+#change the hardcoded value for S in connect and the length of each line in readfile2data
