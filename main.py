@@ -1,14 +1,12 @@
 import numpy as np
-import copy
-import math
 
 def readFile2Data():
-  f=open("day10_input.txt", "r")
+  f=open("testdata1.txt", "r")
   tile_row = []
   tiles=np.array([])
   #tiles = np.array(tile2Dlst)
   count = 0
-  tile_row = ["." for i in range(142)]
+  tile_row = ["." for i in range(12)]
   tiles = np.r_[tiles, tile_row]
   for line in f:
     line=line.strip().split()
@@ -23,32 +21,28 @@ def readFile2Data():
   tile_row = ["." for i in range(length)]
   tiles = np.r_[tiles,tile_row]
   tiles = tiles.reshape(count+2, length)
-  print(tiles.shape)
+  #print(tiles.shape)
   #print(tile2Dlst.shape)
   #tile2Dlst = np.array(tile2Dlst)
   f.close
   return tiles
-
+  
 
 def check_bounds(yin,xin, r, c):
   if yin+1>=r  or yin-1<0 or xin+1>=c or xin-1<0 : return False
   else: return True
 
-
-"""def get_neigh(y,x): #could do slicing here
-  neigh=np.array([[tiles[y-1][x-1],tiles[y-1][x],tiles[y-1][x+1]], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [tiles[y+1][x-1],tiles[y+1][x],tiles[y+1][x+1]]])
-  return neigh"""
-
+  
 def get_neigh(y,x):
   neigh = np.array(tiles[y-1:y+2,x-1:x+2])
   return neigh
 
+  
 #starting
 def get_move_start(neigh):
   connected = connect(neigh)
   y1,x1 = 0,0
-  y2,x2 = 0,0
-  
+  y2,x2 = 0,0 
 
   if connected[0][1]: #up
     pipe = neigh[0][1]
@@ -178,7 +172,7 @@ def get_move(neigh):
   return (connected)"""
 
 def connect(neigh):
-  centre = neigh[1][1] if neigh[1][1]!="S" else "7"
+  centre = neigh[1][1] if neigh[1][1]!="S" else "F"
   connected= np.array([[None,None, None], [None,centre, None], [None,None, None]])
   if centre == "-":
     left = neigh[1][0] 
@@ -220,16 +214,17 @@ def connect(neigh):
 tiles = readFile2Data()
 r, c = tiles.shape
 #print(r, c)
+#print(tiles)
 
 y, x = np.where(tiles == "S")
 y,x=y[0],x[0]
-print(f"start at y,x = {y},{x}")
+#print(f"start at y,x = {y},{x}")
 step=0
 
 
 #getting data through functions for the starting poistion
 neigh = get_neigh(y,x) if check_bounds(y,x,r,c) else None
-print(neigh)
+#print(neigh)
 y1,x1,y2,x2 = get_move_start(neigh)
 #print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
 y1,x1,y2,x2 = y+y1, x+x1, y+y2, x+x2
@@ -238,7 +233,7 @@ step+=1 #moved one step
 #print(f"step = {step}")
 #print(y1,x1,y2,x2)
 #print(f"path1 = {path1}, path2 = {path2}")
-z = input("enter a key: ")
+#z = input("enter a key: ")
 
 #print(check_bounds(y1,x1,r,c))
 
@@ -251,9 +246,9 @@ while True:
   #print(f"at y,x = {y},{x}")
   y1,x1 = get_move(neigh)
   if y1==0 and x1==0: 
-    print("Doing path1 breaking point")
-    print(f"neigh = {neigh}")
-    print(f"at y,x = {y}, {x}")
+    #print("Doing path1 breaking point")
+    #print(f"neigh = {neigh}")
+    #print(f"at y,x = {y}, {x}")
     tiles[y,x]= "S"
     #print(f"y1,x1 =  {y1},{x1}")
     #z = input("enter a key: ")
@@ -275,9 +270,9 @@ while True:
   y2,x2 = get_move(neigh)
 
   if y2==0 and x2==0:
-    print("Doing path2 breaking point")
-    print(f"neigh = {neigh}")
-    print(f"at y,x = {y},{x}")
+    #print("Doing path2 breaking point")
+    #print(f"neigh = {neigh}")
+    #print(f"at y,x = {y},{x}")
     tiles[y,x]= "S"
     #print(f"y2,x2 =  {y2},{x2}")
     #z = input("enter a key: ")
@@ -302,6 +297,20 @@ while True:
   #checking if the paths are the same
   #if no more moves, then we should have reached the converging point of path1 and path2
 
-print(f"step = {step}")
+#print(f"step = {step}")
 
 #change the hardcoded value for S in connect and the length of each line in readfile2data
+
+#now looking for the nest. I am not interested in looking for it while stepping through the path. It might be too many ifs if we do that. 
+
+print("I am here after the while loop")
+tiles = np.array([[tiles[i,j] if (tiles[i,j]=="S" or tiles[i,j]==".") else "." for j in range (c)] for i in range (r)])
+print(tiles.shape)
+print(tiles)
+
+#slice the tiles whereever there is ground and bounded between the path marked by "S"
+for i in range(r):
+  Ss = np.where(tiles[i,:] == "S")
+  print(Ss, i)
+  z = input("enter a key: ")
+  
