@@ -313,4 +313,6 @@ for i in range(r):
   Ss = np.where(tiles[i,:] == "S")
   print(Ss, i)
   z = input("enter a key: ")
-  
+  for l in range(len(Ss[0])-1):
+    if abs(Ss[i]-Ss[i+1])>1:
+      startY=i
