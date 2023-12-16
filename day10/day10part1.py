@@ -34,14 +34,9 @@ def check_bounds(yin,xin, r, c):
   if yin+1>=r  or yin-1<0 or xin+1>=c or xin-1<0 : return False
   else: return True
 
-
-def get_neigh(el,y,x):
-  neigh=np.array([[tiles[y-1][x-1],tiles[y-1][x],tiles[y-1][x+1]], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [tiles[y+1][x-1],tiles[y+1][x],tiles[y+1][x+1]]])
-  return neigh
-
-"""def get_neigh(el,y,x):
-  neigh=np.array([[tiles[y-1][x-1],tiles[y-1][x],tiles[y-1][x+1]], [tiles[y][x-1],tiles[y][x],tiles[y][x+1]], [tiles[y+1][x-1],tiles[y+1][x],tiles[y+1][x]]])
-  return neigh"""
+def get_neigh(y,x):
+neigh = np.array(tiles[y-1:y+2,x-1:x+2])
+return neigh
 
 #starting
 def get_move_start(neigh):
@@ -228,7 +223,7 @@ step=0
 
 
 #getting data through functions for the starting poistion
-neigh = get_neigh(tiles[y,x],y,x) if check_bounds(y,x,r,c) else None
+neigh = get_neigh(y,x) if check_bounds(y,x,r,c) else None
 #print(neigh)
 y1,x1,y2,x2 = get_move_start(neigh)
 #print(f"y1,x1,y2,x2 =  {y1},{x1},{y2},{x2}")
@@ -245,17 +240,12 @@ step+=1 #moved one step
 #start while true loop here
 while True:
   #print("\n\nDoing path1")
-  neigh = get_neigh(tiles[y1,x1],y1,x1) if check_bounds(y1,x1,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
+  neigh = get_neigh(y1,x1) if check_bounds(y1,x1,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]])
   #print(neigh)
   y,x=y1,x1
   #print(f"at y,x = {y},{x}")
   y1,x1 = get_move(neigh)
   
-  """if (y1!=0 and x1!=0):
-    #print(f"change at cy,cx = {cy1},{cx1}")
-    cy1,cx1 = y+cy1, x+cx1
-    tiles[cy1,cx1] = "S"
-    #print(f"changed at y,x = {cy1},{cx1} to {tiles[cy1,cx1]} ")"""
   if y1==0 and x1==0: 
     print("Doing path1 breaking point")
     print(f"neigh = {neigh}")
@@ -272,17 +262,12 @@ while True:
   #z = input("enter a key: ")
   
   #print("\n\nNow doing path2")
-  neigh = get_neigh(tiles[y2,x2],y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]]) 
+  neigh = get_neigh(y2,x2) if check_bounds(y2,x2,r,c) else np.array([[None,None, None], [None,None, None], [None,None, None]]) 
   #need to do cases for the boundary conditions - padded up instead
   #print(neigh)
   y,x=y2,x2
   #print(f"at y,x = {y},{x}")
   y2,x2 = get_move(neigh)
-  """if (y2!=0 and x2!=0):
-    #print(f"change at cy,cx = {cy2},{cx2}")
-    cy2,cx2 = y+cy2,x+cx2
-    tiles[cy2,cx2] = "S"
-    #print(f"changed at y,x = {cy2},{cx2} to {tiles[cy2,cx2]}")"""
   if y2==0 and x2==0:
     print("Doing path2 breaking point")
     print(f"neigh = {neigh}")
