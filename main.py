@@ -3,7 +3,7 @@ from itertools import combinations
 import math
 
 def readFile2Data():
-  f=open("day11_input.txt", "r")
+  f=open("testdatad11.txt", "r")
   """  image=np.array(f.read().strip().splitlines())
   print(image.shape)
   print(image)
@@ -66,9 +66,9 @@ print(len(pairs))
 for i in pairs:
   print(i)
   print(f"first = {galaxies[i[0]]}, and second in the pair is {galaxies[i[1]]}")
-  a2 = (galaxies[i[0]][0][0] - galaxies[i[1]][0][0])**2
-  b2 = (galaxies[i[0]][0][1] - galaxies[i[1]][0][1])**2
-  dist = math.sqrt(a2+b2)
+  a = abs(galaxies[i[0]][0][0] - galaxies[i[1]][0][0])
+  b = abs(galaxies[i[0]][0][1] - galaxies[i[1]][0][1])
+  dist = a+b
   print(f"dist = {dist}")
   z= input("enter a key: ")
 
