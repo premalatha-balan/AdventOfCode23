@@ -3,7 +3,7 @@ from itertools import combinations
 import math
 
 def readFile2Data():
-  f=open("testdata2day11.txt", "r")
+  f=open("day11_input.txt", "r")
   image=np.array([])
   count=0
   for line in f:
@@ -108,7 +108,7 @@ galaxies = np.array([[(gal_wh[0][i], gal_wh[1][i])] for i in range(len(gal_wh[0]
 #expanding 10 times
 expand=0
 count=0
-times=99
+times=(1000000-1)
 #print("\n\nworking on rows")
 for i in range(r):
   if i not in gal_wh[0]:
@@ -133,7 +133,7 @@ for i in range(r):
 
 count=0
 expand=0
-times=99
+times=(1000000-1)
 
 #print("\n\nworking on columns")
 #print(f"gal_wh[1] before expanding {gal_wh[1]}")
