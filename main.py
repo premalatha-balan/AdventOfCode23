@@ -37,7 +37,7 @@ def dist_pair(pair):
   gal2 = galaxies[pair[1]][0]
   #print(gal1, gal2)
   dist = abs(gal1[0]-gal2[0])+abs(gal1[1]-gal2[1])
-  print(f"gal1 = {gal1}, gal2 = {gal2} and  dist = {dist}")
+  #print(f"gal1 = {gal1}, gal2 = {gal2} and  dist = {dist}")
   #z= input("enter a key: ")
   return abs(gal1[0]-gal2[0])+abs(gal1[1]-gal2[1])
   
@@ -51,7 +51,7 @@ gal_wh = np.where(image == "#")
 #print(len(gal_wh))
 #print(f"length of gal_wh[0] = {len(gal_wh[0])}")
 #print(f"length of gal_wh[1] = {len(gal_wh[1])}")
-print(f"gal_wh[0] before expanding {gal_wh[0]}")
+#print(f"gal_wh[0] before expanding {gal_wh[0]}")
 #print(f"gal_wh[1] before expanding {gal_wh[1]}")
 #print(len(gal_wh[1]))
 #z= input("enter a key at checking: ")
@@ -108,7 +108,7 @@ galaxies = np.array([[(gal_wh[0][i], gal_wh[1][i])] for i in range(len(gal_wh[0]
 #expanding 10 times
 expand=0
 count=0
-times=1
+times=99
 #print("\n\nworking on rows")
 for i in range(r):
   if i not in gal_wh[0]:
@@ -121,21 +121,22 @@ for i in range(r):
   elif count!=0:
     loc = list(np.where(gal_wh[0]==i))
     for l in range(len(loc)):
-      print(f"changing {gal_wh[0][loc[l]]} to {gal_wh[0][loc[l]]+expand}")
+      #print(f"changing {gal_wh[0][loc[l]]} to {gal_wh[0][loc[l]]+expand}")
       gal_wh[0][loc[l]] = gal_wh[0][loc[l]]+expand
-      print(f"changed {gal_wh[0][loc[l]]}")
+      #print(f"changed {gal_wh[0][loc[l]]}")
       #z= input("enter a key: ")
 
-print(f"after expanding rows, gal_wh[0] is {gal_wh[0]}")
+#print(f"after expanding rows, gal_wh[0] is {gal_wh[0]}")
 #z= input("enter a key: ")
 #print(f"added {count} rows")
 
 
 count=0
 expand=0
-times=1
+times=99
+
 #print("\n\nworking on columns")
-print(f"gal_wh[1] before expanding {gal_wh[1]}")
+#print(f"gal_wh[1] before expanding {gal_wh[1]}")
 for i in range(c):
   if i not in gal_wh[1]:
     #print(f"column {i} is not a galaxy")
@@ -154,7 +155,7 @@ for i in range(c):
       #print(f"expand = {expand} and count = {count}")
       #z= input("enter a key: ")
 
-print(f"after expanding columns, gal_wh[1] is {gal_wh[1]}")
+#print(f"after expanding columns, gal_wh[1] is {gal_wh[1]}")
 #z= input("enter a key: ")
 
 #creating the galaxies pairs after expanding
@@ -170,6 +171,6 @@ pairs = list(combinations(ids, 2))
 
 sum_lst = list(map(dist_pair, pairs))
 sum_lst.sort()
-print(f"sume of distances = {(sum_lst)}")
+#print(f"sume of distances = {(sum_lst)}")
 print(f"sum = {sum(sum_lst)}")
 
