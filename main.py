@@ -26,9 +26,30 @@ def readFile2Data():
   f.close
   return springMap, springNum
 
+def num2map(numlst):
+  b=""
+  x = lambda a: "."+"".join([b+"#" for i in range(a)])+"."
+  return list(map(x, numlst))
+
 
 springMap, springNum = readFile2Data()
 print(springMap)
+print(springNum)
+
+b=""
+x = lambda a: "."+"".join([b+"#" for i in range(a)])+"."
+#print(x(3))
+#print(list(map(x, [1,1,3])))
+
+for i in range(len(springMap)):
+  sMap = list(map(x, springNum[i]))
+  for s in sMap:
+    if s not in springMap[i]:
+      print(s, springMap[i])
+      z=input("enter a key")
+
+z=input("enter a key")
+
 
 length = len(springMap)
 #changing the lists to np.arrays so that I can use where function to find where the ?s are and where 1s are etc. 
