@@ -1,4 +1,4 @@
-#import numpy as np
+import numpy as np
 from itertools import permutations
 import math
 
@@ -31,8 +31,6 @@ def num2map(numlst):
   #x = lambda a: "."+"".join([b+"#" for i in range(a)])+"."
   x = lambda a: "".join([b+"#" for i in range(a)])
   return list(map(x, numlst))
-  
-  
 
 springMap, springNum = readFile2Data()
 print(springMap)
@@ -47,10 +45,16 @@ x = lambda a: "".join([b+"#" for i in range(a)])
 length = len(springMap)
 
 for i in range(length):
-  brokenMap = springMap[i]
-  
-  
-
+  brokenMap = np.array([c for c in springMap[i]])
+  #print(brokenMap)
+  #z = input("enter a key: ")
+  xq = np.array(np.where(brokenMap == "?"))[0]
+  #print(xq)
+  #z = input("enter a key: ")
+  xh = np.array(np.where(brokenMap == "#"))[0]
+  xd = np.array(np.where(brokenMap == "."))[0]
+  print(f"xq = {xq}, xh = {xh}, xd = {xd}")
+  z = input("enter a key: ")
 
 #changing the lists to np.arrays so that I can use where function to find where the ?s are and where 1s are etc. 
 """for i in range(length):
