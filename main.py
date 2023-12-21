@@ -45,6 +45,7 @@ x = lambda a: "".join([b+"#" for i in range(a)])
 length = len(springMap)
 
 for i in range(length):
+  #changing the lists to np.arrays so that I can use where function to find where the ?s are and where 1s are etc. 
   brokenMap = np.array([c for c in springMap[i]])
   #print(brokenMap)
   #z = input("enter a key: ")
@@ -55,17 +56,12 @@ for i in range(length):
   xd = np.array(np.where(brokenMap == "."))[0]
   print(f"xq = {xq}, xh = {xh}, xd = {xd}")
   z = input("enter a key: ")
+  #print(f"xq = {xq}, xh = {xh}, xd = {xd}")
+  #z = input("enter a key: ")
 
-#changing the lists to np.arrays so that I can use where function to find where the ?s are and where 1s are etc. 
-"""for i in range(length):
-  springMap[i] = np.array(springMap[i])
-  springNum[i] = np.array(springNum[i])
-  xq = np.array(np.where(springMap[i] == "?"))[0]
-  xh = np.array(np.where(springMap[i] == "#"))[0]
-  xd = np.array(np.where(springMap[i] == "."))[0]
-  print(xq, xh, xd)
-  print(springNum[i])
-  z = input("enter a key: ")"""
+  
+
+
   
   
   
