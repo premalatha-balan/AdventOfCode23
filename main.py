@@ -34,16 +34,28 @@ def findRefln(m):
   print(f" small = {small}")
   count = 0
   for j in range(small):
-    if up[j] == down[j]:
-      count+=1
-    else: 
+    if up[j] != down[j]:
       print("not mirror")
+      z = input("enter a key: ") 
       return False
+  return len(up)
+
+def getTransData(data):
+  data = np.array([list(line) for line in data])
+  print(data)
   z = input("enter a key: ")
-  return count
+  r,c = data.shape
+  print(f"r,c = {r},{c}")
+  data = data.transpose()
+  r,c = data.shape
+  print(f"r,c = {r},{c}")
+  print(data)
+  z = input("enter a key: ") 
+  data = ["".join(line) for line in data]
+  print(data)
+  z = input("enter a key: ") 
+  return data
   
-
-
 while True:
   data = readFile2Data(f)
 
@@ -54,6 +66,18 @@ while True:
     count = findRefln(m)
     print(m, count)
     z = input("enter a key: ")
+    if not count: 
+      getTransData(data)
+      #how do I handle the recursion happening here? 
+    else: 
+      print(f"m, count = {m, count} and we have a mirror")
+      break
+  else:
+    getTransData(data)
+
+  print(f"we have a mirror at m, count = {m}, {count}" )
+  z = input("enter a key: ")
+
   
   """data = np.array([list(line) for line in data])
   print(data)
