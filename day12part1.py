@@ -4,10 +4,7 @@ f=open("day12_input.txt", "r")
 ways = 0
 for row in f:
     record, checksum = row.split()
-
     checksum = [int(n) for n in checksum.split(',')]
-    record = '?'.join([record for i in range(5)])
-    checksum *= 5
     #print(f"record = {record}, checksum = {checksum}")
     #z = input("enter a key: ")
     positions = {0: 1}
