@@ -55,46 +55,54 @@ def getTransData(data):
   print(data)
   z = input("enter a key: ") 
   return data
+
+count = 0
+sumTot = 0
   
 while True:
   data = readFile2Data(f)
-
-  m = findMirror()
-  print(f"m = {m}")
-  z = input("enter a key: ")
-  if m:
-    count = findRefln(m)
-    print(m, count)
-    z = input("enter a key: ")
-    if not count: 
-      getTransData(data)
-      #how do I handle the recursion happening here? 
-    else: 
-      print(f"m, count = {m, count} and we have a mirror")
-      break
-  else:
-    getTransData(data)
-
-  print(f"we have a mirror at m, count = {m}, {count}" )
-  z = input("enter a key: ")
-
-  
-  """data = np.array([list(line) for line in data])
-  print(data)
-  z = input("enter a key: ")
-  r,c = data.shape
-  for i in range(1,r):
-    if "".join(data[i-1]) == data[i]:
-      print(f"found mirror between {i-1} and {i+1} ")
-      z = input("enter a key: ")
-  """
-  
-  
-
-  
   if len(data)==0:
     print("reached the end of file")
     break
+  else:
+    for ro1col2 in range(2):
+      print(f"rol1col2 = {ro1col2} and sumTot = {sumTot}")
+      z = input("enter a key: ")
+      m = findMirror()
+      print(f"m = {m}")
+      z = input("enter a key: ")
+      if m:
+        count = findRefln(m) 
+        if not count: 
+          getTransData(data)
+        else:
+          #how do I handle the recursion happening here? 
+          print(f"m, count = {m, count} and we have a mirror")
+          sumTot += 100*count if ro1col2 == 0 else sumTot+count
+          print(f"m={m}, count={count} and sumTot={sumTot} at rol1col2 = {ro1col2}") 
+          z = input("enter a key: ")
+      else:
+        getTransData(data)
+    
+      print(f"rol1col2 = {ro1col2} and sumTot = {sumTot}")
+      z = input("enter a key: ")
+  
+    
+    """data = np.array([list(line) for line in data])
+    print(data)
+    z = input("enter a key: ")
+    r,c = data.shape
+    for i in range(1,r):
+      if "".join(data[i-1]) == data[i]:
+        print(f"found mirror between {i-1} and {i+1} ")
+        z = input("enter a key: ")
+    """
+  
+  
+
+  
+
 #print(data)
+print(count)
     
 f.close()
